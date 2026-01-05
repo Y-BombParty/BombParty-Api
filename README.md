@@ -1,3 +1,3 @@
-# BombParty
+# Bomb Party
 
-## Pre-Release
+## Members
