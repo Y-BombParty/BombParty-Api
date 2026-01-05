@@ -16,6 +16,9 @@ type GameRequest struct {
 
 func (a *GameRequest) Bind(r *http.Request) error {
 
+	minLimit := time.Now().AddDate(0, 0, 1) // 1 day
+	maxLimit := time.Now().AddDate(0, 1, 0) // 1 month
+
 	if a.CenterLatitude < -90 || a.CenterLatitude > 90 { // 90
 		return errors.New("Wrong Center latitude value, must be betwen -90 / 90")
 	}
@@ -26,6 +29,10 @@ func (a *GameRequest) Bind(r *http.Request) error {
 
 	if a.Size < 50 || a.Size > 10107 {
 		return errors.New("Wrong size value, must be between 50 and 10107")
+	}
+
+	if a.EndingDate.After(maxLimit) || a.EndingDate.After(minLimit) {
+		return errors.New("Wrong ending date value, must be between 1 days and 1 month")
 	}
 
 	return nil

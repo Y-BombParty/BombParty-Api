@@ -27,7 +27,7 @@ func (g GameEntry) BeforeCreate(tx *gorm.DB) (err error) {
 type GameRepository interface {
 	Create(entry *GameEntry) (*GameEntry, error)
 	FindById(id uuid.UUID) (*GameEntry, error)
-	FindAll(entry *GameEntry) ([]*GameEntry, error)
+	FindAll() ([]*GameEntry, error)
 	Update(entry *GameEntry, id uuid.UUID) (*GameEntry, error)
 	DeleteById(id uuid.UUID) error
 }
@@ -62,7 +62,7 @@ func (r *gameRepository) FindById(id uuid.UUID) (*GameEntry, error) {
 	return entries, nil
 }
 
-func (r *gameRepository) FindAll(entry *GameEntry) ([]*GameEntry, error) {
+func (r *gameRepository) FindAll() ([]*GameEntry, error) {
 
 	var entries []*GameEntry
 	if err := r.db.Model(&GameEntry{}).
