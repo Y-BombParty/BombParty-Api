@@ -11,6 +11,7 @@ import (
 type Config struct {
 	// Repository connection
 	GameRepository dbmodel.GameRepository
+	TeamRepository dbmodel.TeamRepository
 }
 
 func New() (*Config, error) {
@@ -28,6 +29,7 @@ func New() (*Config, error) {
 
 	// Init repository
 	config.GameRepository = dbmodel.NewGameRepository(databaseSession)
+	config.TeamRepository = dbmodel.NewTeamRepository(databaseSession)
 
 	return &config, nil
 }

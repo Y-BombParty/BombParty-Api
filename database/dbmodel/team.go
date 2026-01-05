@@ -19,7 +19,7 @@ func (b TeamEntry) BeforeCreate(tx *gorm.DB) (err error) {
 	return
 }
 
-type TeamEntryRepository interface {
+type TeamRepository interface {
 	Create(team *TeamEntry) (*TeamEntry, error)
 	FindAll() ([]*TeamEntry, error)
 	FindById(uuid uuid.UUID) (*TeamEntry, error)
@@ -27,26 +27,26 @@ type TeamEntryRepository interface {
 	Delete(uuid uuid.UUID, team *TeamEntry) error
 }
 
-type teamEntryRepository struct {
+type teamRepository struct {
 	db *gorm.DB
 }
 
-func NewTeamRepository(db *gorm.DB) TeamEntryRepository {
-	return &teamEntryRepository{db: db}
+func NewTeamRepository(db *gorm.DB) TeamRepository {
+	return &teamRepository{db: db}
 }
 
-func (r *teamEntryRepository) Create(team *TeamEntry) (*TeamEntry, error) {
+func (r *teamRepository) Create(team *TeamEntry) (*TeamEntry, error) {
 	if err := r.db.Create(team).Error; err != nil {
 		return nil, err
 	}
 	return team, nil
 }
 
-func (r *teamEntryRepository) Delete(uuid uuid.UUID, team *TeamEntry) error {
+func (r *teamRepository) Delete(uuid uuid.UUID, team *TeamEntry) error {
 	return r.db.Delete(team, uuid).Error
 }
 
-func (r *teamEntryRepository) FindById(uuid uuid.UUID) (*TeamEntry, error) {
+func (r *teamRepository) FindById(uuid uuid.UUID) (*TeamEntry, error) {
 	var team TeamEntry
 	if err := r.db.First(&team, uuid).Error; err != nil {
 		return nil, err
@@ -55,14 +55,14 @@ func (r *teamEntryRepository) FindById(uuid uuid.UUID) (*TeamEntry, error) {
 
 }
 
-func (r *teamEntryRepository) Update(team *TeamEntry) (*TeamEntry, error) {
+func (r *teamRepository) Update(team *TeamEntry) (*TeamEntry, error) {
 	if err := r.db.Save(team).Error; err != nil {
 		return nil, err
 	}
 	return team, nil
 }
 
-func (r *teamEntryRepository) FindAll() ([]*TeamEntry, error) {
+func (r *teamRepository) FindAll() ([]*TeamEntry, error) {
 	var teams []*TeamEntry
 	if err := r.db.Find(&teams).Error; err != nil {
 		return nil, err

@@ -3,12 +3,12 @@ package team
 import (
 	"net/http"
 
+	"bombparty.com/bombparty-api/config"
 	"bombparty.com/bombparty-api/database/dbmodel"
-	"bombparty.com/bombparty-api/pkg/models"
+	"bombparty.com/bombparty-api/pkg/model"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/render"
 	"github.com/google/uuid"
-	
 )
 
 type TeamConfig struct {
@@ -25,13 +25,13 @@ func New(configuration *config.Config) *TeamConfig {
 // @Tags         Teams
 // @Accept       json
 // @Produce      json
-// @Param        team  body      models.TeamRequest  true  "Team payload"
+// @Param        team  body      model.TeamRequest  true  "Team payload"
 // @Success      201   {object}  dbmodel.TeamEntry
 // @Failure      400   {object}  map[string]string
 // @Failure      500   {object}  map[string]string
 // @Router       /teams [post]
 func (config *TeamConfig) CreateTeamHandler(w http.ResponseWriter, r *http.Request) {
-	req := &models.TeamRequest{}
+	req := &model.TeamRequest{}
 
 	if err := render.Bind(r, req); err != nil {
 		render.Status(r, http.StatusBadRequest)
@@ -48,7 +48,7 @@ func (config *TeamConfig) CreateTeamHandler(w http.ResponseWriter, r *http.Reque
 		IDGame: req.IDGame,
 	}
 
-	savedTeam, err := config.TeamEntryRepository.Create(team)
+	savedTeam, err := config.TeamRepository.Create(team)
 	if err != nil {
 		render.Status(r, http.StatusInternalServerError)
 		render.JSON(w, r, map[string]string{
@@ -70,7 +70,7 @@ func (config *TeamConfig) CreateTeamHandler(w http.ResponseWriter, r *http.Reque
 // @Failure      500  {object}  map[string]string
 // @Router       /teams [get]
 func (config *TeamConfig) GetAllTeamsHandler(w http.ResponseWriter, r *http.Request) {
-	teams, err := config.TeamEntryRepository.FindAll()
+	teams, err := config.TeamRepository.FindAll()
 	if err != nil {
 		render.Status(r, http.StatusInternalServerError)
 		render.JSON(w, r, map[string]string{
@@ -104,7 +104,7 @@ func (config *TeamConfig) GetTeamByIDHandler(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	team, err := config.TeamEntryRepository.FindById(teamID)
+	team, err := config.TeamRepository.FindById(teamID)
 	if err != nil {
 		render.Status(r, http.StatusNotFound)
 		render.JSON(w, r, map[string]string{
@@ -125,7 +125,7 @@ func (config *TeamConfig) GetTeamByIDHandler(w http.ResponseWriter, r *http.Requ
 // @Accept       json
 // @Produce      json
 // @Param        id    path      string               true  "Team ID (UUID)"
-// @Param        team  body      models.TeamRequest   true  "Updated team payload"
+// @Param        team  body      model.TeamRequest   true  "Updated team payload"
 // @Success      200   {object}  dbmodel.TeamEntry
 // @Failure      400   {object}  map[string]string
 // @Failure      404   {object}  map[string]string
@@ -143,7 +143,7 @@ func (config *TeamConfig) UpdateTeamHandler(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
-	req := &models.TeamRequest{}
+	req := &model.TeamRequest{}
 	if err := render.Bind(r, req); err != nil {
 		render.Status(r, http.StatusBadRequest)
 		render.JSON(w, r, map[string]string{
@@ -152,7 +152,7 @@ func (config *TeamConfig) UpdateTeamHandler(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
-	existing, err := config.TeamEntryRepository.FindById(teamID)
+	existing, err := config.TeamRepository.FindById(teamID)
 	if err != nil {
 		render.Status(r, http.StatusNotFound)
 		render.JSON(w, r, map[string]string{
@@ -166,7 +166,7 @@ func (config *TeamConfig) UpdateTeamHandler(w http.ResponseWriter, r *http.Reque
 	existing.Color = req.Color
 	existing.IDGame = req.IDGame
 
-	updatedTeam, err := config.TeamEntryRepository.Update(existing)
+	updatedTeam, err := config.TeamRepository.Update(existing)
 	if err != nil {
 		render.Status(r, http.StatusInternalServerError)
 		render.JSON(w, r, map[string]string{
@@ -200,7 +200,7 @@ func (config *TeamConfig) DeleteTeamHandler(w http.ResponseWriter, r *http.Reque
 		})
 		return
 	}
-	team, err := config.TeamEntryRepository.FindById(teamID)
+	team, err := config.TeamRepository.FindById(teamID)
 	if err != nil {
 		render.Status(r, http.StatusNotFound)
 		render.JSON(w, r, map[string]string{
@@ -209,7 +209,7 @@ func (config *TeamConfig) DeleteTeamHandler(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
-	if err := config.TeamEntryRepository.Delete(teamID, team); err != nil {
+	if err := config.TeamRepository.Delete(teamID, team); err != nil {
 		render.Status(r, http.StatusInternalServerError)
 		render.JSON(w, r, map[string]string{
 			"error": "failed to delete team",

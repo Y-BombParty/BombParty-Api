@@ -30,6 +30,7 @@ func Migrate(db *gorm.DB) {
 
 	db.AutoMigrate(
 		&dbmodel.GameEntry{},
+		&dbmodel.TeamEntry{},
 	)
 
 	log.Println("Database migrated successfully")

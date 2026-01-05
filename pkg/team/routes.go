@@ -1,6 +1,7 @@
 package team
 
-import(
+import (
+	"bombparty.com/bombparty-api/config"
 	"github.com/go-chi/chi/v5"
 )
 
@@ -13,7 +14,6 @@ func Routes(configuration *config.Config) *chi.Mux {
 	router.Get("/{id}", teamConfig.GetTeamByIDHandler)
 	router.Put("/{id}", teamConfig.UpdateTeamHandler)
 	router.Delete("/{id}", teamConfig.DeleteTeamHandler)
-	
 
 	return router
 }
