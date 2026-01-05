@@ -1,0 +1,15 @@
+meta {
+  name: InitInventory
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{urlApi}}/inventory/init
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

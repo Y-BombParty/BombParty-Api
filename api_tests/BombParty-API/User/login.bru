@@ -1,0 +1,23 @@
+meta {
+  name: login
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{urlApi}}/user/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email" : "bla@mail.com",
+    "password" : "azerty"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
