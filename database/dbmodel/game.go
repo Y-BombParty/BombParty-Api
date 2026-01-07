@@ -9,17 +9,17 @@ import (
 
 type GameEntry struct {
 	IDGame          uuid.UUID `gorm:"type:uuid;primaryKey"`
-	CenterLatitude  float32   `json:"game_center_latitude"`
-	CenterLongitude float32   `json:"game_center_longitude"`
-	Size            float32   `json:"game_size"`
-	StartingDate    time.Time `json:"game_starting_date"`
-	EndingDate      time.Time `json:"game_ending_date`
+	CenterLatitude  float32   `json:"center_latitude"`
+	CenterLongitude float32   `json:"center_longitude"`
+	Size            float32   `json:"size"`
+	StartingDate    time.Time `json:"starting_date"`
+	EndingDate      time.Time `json:"ending_date"`
 
 	Teams []TeamEntry `json:"teams" gorm:"foreignKey:IDTeam;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 	CrudInfo
 }
 
-func (g GameEntry) BeforeCreate(tx *gorm.DB) (err error) {
+func (g *GameEntry) BeforeCreate(tx *gorm.DB) (err error) {
 	g.IDGame = uuid.New()
 	return
 }
@@ -42,7 +42,6 @@ func NewGameRepository(db *gorm.DB) GameRepository {
 
 func (r *gameRepository) Create(entry *GameEntry) (*GameEntry, error) {
 
-	entry.IDGame = uuid.New()
 	if err := r.db.Create(entry).Error; err != nil {
 		return nil, err
 	}
@@ -102,7 +101,7 @@ func (r *gameRepository) Update(entry *GameEntry, id uuid.UUID) (*GameEntry, err
 
 func (r *gameRepository) DeleteById(id uuid.UUID) error {
 
-	if err := r.db.Delete(GameEntry{}).Error; err != nil {
+	if err := r.db.Delete(GameEntry{}, id).Error; err != nil {
 		return err
 	}
 

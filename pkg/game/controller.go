@@ -1,7 +1,6 @@
 package game
 
 import (
-	"log"
 	"net/http"
 
 	"bombparty.com/bombparty-api/config"
@@ -37,22 +36,28 @@ func (config *GameConfig) PostHandler(w http.ResponseWriter, r *http.Request) {
 	// Get the request
 	req := &model.GameRequest{}
 	if err := render.Bind(r, req); err != nil {
-		render.JSON(w, r, map[string]string{"error": "Invalid Game Post request payload. " + err.Error()})
+		render.JSON(w, r, map[string]string{"Error": "Invalid Game Post request payload. " + err.Error()})
+		return
+	}
+
+	// Check if there is nil value
+	if err := req.ValidateCreate(); err != nil {
+		render.JSON(w, r, map[string]string{"Error": err.Error()})
 		return
 	}
 
 	// Convert the requested data into dbmodel.GameEntry type for the "Create" function
 	gameEntry := &dbmodel.GameEntry{
-		CenterLatitude:  req.CenterLatitude,
-		CenterLongitude: req.CenterLongitude,
-		Size:            req.Size,
-		StartingDate:    req.StartingDate,
-		EndingDate:      req.EndingDate}
+		CenterLatitude:  *req.CenterLatitude,
+		CenterLongitude: *req.CenterLongitude,
+		Size:            *req.Size,
+		StartingDate:    *req.StartingDate,
+		EndingDate:      *req.EndingDate}
 
 	// Request the DB to Create the informations
 	entries, err := config.GameRepository.Create(gameEntry)
 	if err != nil {
-		render.JSON(w, r, map[string]string{"error": "Failed to Create Game"})
+		render.JSON(w, r, map[string]string{"Error": "Failed to Create Game"})
 		return
 	}
 
@@ -73,7 +78,7 @@ func (config *GameConfig) PostHandler(w http.ResponseWriter, r *http.Request) {
 // @Description  Retrieves a specific game from the database by its ID, including associated teams
 // @Tags         games
 // @Produce      json
-// @Param        id   path      int  true  "game ID"
+// @Param        id   path      string  true  "game ID"
 // @Security     BearerAuth
 // @Success      200  {object}  model.GameResponse
 // @Failure      404  {object}  map[string]string  "Game not found"
@@ -84,19 +89,22 @@ func (config *GameConfig) GetByIdHandler(w http.ResponseWriter, r *http.Request)
 	// Get the id in the URL
 	idStr := chi.URLParam(r, "id")
 	if idStr == "" {
-		w.WriteHeader(http.StatusNotFound)
+		render.Status(r, http.StatusNotFound)
+		render.JSON(w, r, map[string]string{"Error": "Missing Id"})
 		return
 	}
 
 	uuid, err := uuid.Parse(idStr)
 	if err != nil {
-		log.Println("Error during id convertion")
+		render.Status(r, http.StatusBadRequest)
+		render.JSON(w, r, map[string]string{"Error": "Invalid Id"})
+		return
 	}
 
 	// Request the DB to Get the needed informations
 	entries, err := config.GameRepository.FindById(uuid)
 	if err != nil {
-		render.JSON(w, r, map[string]string{"error": "Failed to Find specific game"})
+		render.JSON(w, r, map[string]string{"Error": "Failed to Find specific game"})
 		return
 	}
 
@@ -135,15 +143,15 @@ func (config *GameConfig) GetAlldHandler(w http.ResponseWriter, r *http.Request)
 
 	entries, err := config.GameRepository.FindAll()
 	if err != nil {
-		render.JSON(w, r, map[string]string{"error": "Failed to Find Games"})
+		render.JSON(w, r, map[string]string{"Error": "Failed to Find Games"})
 		return
 	}
 
 	// Set up to a dedicated type for the response
 	var res []*model.GameResponse
-	var teams []*model.TeamResponse
 
 	for _, game := range entries {
+		var teams []*model.TeamResponse
 		for _, team := range game.Teams {
 			teams = append(teams, &model.TeamResponse{
 				Score:  team.Score,
@@ -160,7 +168,6 @@ func (config *GameConfig) GetAlldHandler(w http.ResponseWriter, r *http.Request)
 				StartingDate:    game.StartingDate,
 				EndingDate:      game.EndingDate,
 				Teams:           teams})
-		teams = nil
 	}
 
 	render.JSON(w, r, res)
@@ -172,53 +179,75 @@ func (config *GameConfig) GetAlldHandler(w http.ResponseWriter, r *http.Request)
 // @Tags         games
 // @Accept       json
 // @Produce      json
-// @Param        id     path      int                  true  "Game ID"
+// @Param        id     path      string                  true  "Game ID"
 // @Param        game  body      model.GameRequest  true  "Game update payload"
 // @Security     BearerAuth
 // @Success      200    {object}  model.GameResponse
 // @Failure      400    {object}  map[string]string  "Invalid request payload"
 // @Failure      404    {object}  map[string]string  "Game not found"
 // @Failure      500    {object}  map[string]string  "Failed to update game"
-// @Router       /games/{id} [put]
+// @Router       /games/{id} [patch]
 func (config *GameConfig) UpdateHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Get the id in the URL
 	idStr := chi.URLParam(r, "id")
 	if idStr == "" {
-		w.WriteHeader(http.StatusNotFound)
+		render.Status(r, http.StatusNotFound)
+		render.JSON(w, r, map[string]string{"Error": "Missing Id"})
 		return
 	}
 
 	uuid, err := uuid.Parse(idStr)
 	if err != nil {
-		log.Println("Error during id convertion")
+		render.Status(r, http.StatusBadRequest)
+		render.JSON(w, r, map[string]string{"Error": "Invalid Id"})
+		return
 	}
 
 	// Get the request
 	req := &model.GameRequest{}
 	if err := render.Bind(r, req); err != nil {
-		render.JSON(w, r, map[string]string{"error": "Invalid Game Update request payload. " + err.Error()})
+		render.JSON(w, r, map[string]string{"Error": "Invalid Game Update request payload. " + err.Error()})
+		return
+	}
+
+	// Check if there is at least one new value
+	if err := req.ValidateUpdate(); err != nil {
+		render.JSON(w, r, map[string]string{"error": err.Error()})
 		return
 	}
 
 	// Check if the linked cat id existe
-	if _, err := config.GameRepository.FindById(uuid); err != nil {
-		render.JSON(w, r, map[string]string{"error": "Game not found in the DB"})
+	existingGame, err := config.GameRepository.FindById(uuid)
+	if err != nil {
+		render.JSON(w, r, map[string]string{"Error": "Game not found in the DB"})
 		return
 	}
 
 	// Convert the requested data into dbmodel.GameEntry type for the "Update" function
-	gameEntry := &dbmodel.GameEntry{
-		CenterLatitude:  req.CenterLatitude,
-		CenterLongitude: req.CenterLongitude,
-		Size:            req.Size,
-		StartingDate:    req.StartingDate,
-		EndingDate:      req.EndingDate}
+	gameEntry := existingGame
+
+	// Fill the gameEntry with the good values
+	if req.CenterLatitude != nil {
+		gameEntry.CenterLatitude = *req.CenterLatitude
+	}
+	if req.CenterLongitude != nil {
+		gameEntry.CenterLongitude = *req.CenterLongitude
+	}
+	if req.Size != nil {
+		gameEntry.Size = *req.Size
+	}
+	if req.StartingDate != nil {
+		gameEntry.StartingDate = *req.StartingDate
+	}
+	if req.EndingDate != nil {
+		gameEntry.EndingDate = *req.EndingDate
+	}
 
 	// Request the DB to Update the informations
 	entries, err := config.GameRepository.Update(gameEntry, uuid)
 	if err != nil {
-		render.JSON(w, r, map[string]string{"error": "Failed to Update Game"})
+		render.JSON(w, r, map[string]string{"Error": "Failed to Update Game"})
 		return
 	}
 
@@ -249,7 +278,7 @@ func (config *GameConfig) UpdateHandler(w http.ResponseWriter, r *http.Request) 
 // @Description  Deletes a game from the database by its ID
 // @Tags         games
 // @Produce      json
-// @Param        id   path      int  true  "Game ID"
+// @Param        id   path      string  true  "Game ID"
 // @Security     BearerAuth
 // @Success      200  {object}  map[string]string  "Game deleted successfully"
 // @Failure      404  {object}  map[string]string  "Game not found"
@@ -260,19 +289,22 @@ func (config *GameConfig) DeleteHandler(w http.ResponseWriter, r *http.Request) 
 	// Get the id in the URL
 	idStr := chi.URLParam(r, "id")
 	if idStr == "" {
-		w.WriteHeader(http.StatusNotFound)
+		render.Status(r, http.StatusNotFound)
+		render.JSON(w, r, map[string]string{"Error": "Missing Id"})
 		return
 	}
 
 	id, err := uuid.Parse(idStr)
 	if err != nil {
-		log.Println("Error during id convertion")
+		render.Status(r, http.StatusBadRequest)
+		render.JSON(w, r, map[string]string{"Error": "Invalid Id"})
+		return
 	}
 
 	// Request the DB to Delete the informations
 	errDelete := config.GameRepository.DeleteById(id)
 	if errDelete != nil {
-		render.JSON(w, r, map[string]string{"error": "Failed to Delete Game"})
+		render.JSON(w, r, map[string]string{"Error": "Failed to Delete Game"})
 		return
 	}
 

@@ -14,7 +14,7 @@ type TeamEntry struct {
 	CrudInfo
 }
 
-func (b TeamEntry) BeforeCreate(tx *gorm.DB) (err error) {
+func (b *TeamEntry) BeforeCreate(tx *gorm.DB) (err error) {
 	b.IDTeam = uuid.New()
 	return
 }

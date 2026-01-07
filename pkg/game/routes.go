@@ -20,7 +20,7 @@ func Routes(configuration *config.Config) chi.Router {
 		router.Get("/", gameConfig.GetAlldHandler)
 		router.Get("/{id}", gameConfig.GetByIdHandler)
 		router.Post("/", gameConfig.PostHandler)
-		router.Put("/{id}", gameConfig.UpdateHandler)
+		router.Patch("/{id}", gameConfig.UpdateHandler)
 		router.Delete("/{id}", gameConfig.DeleteHandler)
 	})
 
