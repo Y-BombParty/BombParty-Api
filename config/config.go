@@ -1,28 +1,35 @@
 package config
 
 import (
-	"bombparty.com/bombparty-api/database/dbmodel"
 	"bombparty.com/bombparty-api/database"
+	"bombparty.com/bombparty-api/database/dbmodel"
 
-	"github.com/glebarez/sqlite"
+	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
 type Config struct {
-	BombRepository       dbmodel.BombRepository
+	// Repository connection
+	GameRepository dbmodel.GameRepository
+	TeamRepository dbmodel.TeamRepository
 }
 
 func New() (*Config, error) {
+
 	config := Config{}
 
-	databaseSession, err := gorm.Open(sqlite.Open("database.db"), &gorm.Config{})
+	// Init DB connection
+	databaseSession, err := gorm.Open(sqlite.Open("bomb-party.db"), &gorm.Config{})
 	if err != nil {
 		return &config, err
 	}
 
+	// Models migrate
 	database.Migrate(databaseSession)
 
-	config.BombRepository = dbmodel.NewBombRepository(databaseSession)
+	// Init repository
+	config.GameRepository = dbmodel.NewGameRepository(databaseSession)
+	config.TeamRepository = dbmodel.NewTeamRepository(databaseSession)
 
 	return &config, nil
 }
