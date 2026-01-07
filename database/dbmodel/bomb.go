@@ -4,7 +4,7 @@ import (
 	"gorm.io/gorm"
 )
 
-type Bomb struct {
+type BombEntry struct {
 	BombID   uint    `gorm:"primaryKey;autoIncrement;column:bomb_id" json:"bomb_id"`
 	Lat      float32 `json:"lat"`
 	Long     float32 `json:"long"`
@@ -13,11 +13,11 @@ type Bomb struct {
 }
 
 type BombRepository interface {
-	Create(bomb *Bomb) (*Bomb, error)
-	FindAll() ([]*Bomb, error)
-	FindAllByUserId(userId int) ([]*Bomb, error)
-	Find(id int) (*Bomb, error)
-	Update(bomb *Bomb) (*Bomb, error)
+	Create(bomb *BombEntry) (*BombEntry, error)
+	FindAll() ([]*BombEntry, error)
+	FindAllByUserId(userId int) ([]*BombEntry, error)
+	FindById(id int) (*BombEntry, error)
+	Update(bomb *BombEntry) (*BombEntry, error)
 	Delete(id int) error
 }
 
@@ -30,23 +30,23 @@ func NewBombRepository(db *gorm.DB) BombRepository {
 	return &bombRepository{db: db}
 }
 
-func (r *bombRepository) Create(bomb *Bomb) (*Bomb, error) {
+func (r *bombRepository) Create(bomb *BombEntry) (*BombEntry, error) {
 	if err := r.db.Create(bomb).Error; err != nil {
 		return nil, err
 	}
 	return bomb, nil
 }
 
-func (r *bombRepository) FindAll() ([]*Bomb, error) {
-	var bombs []*Bomb
+func (r *bombRepository) FindAll() ([]*BombEntry, error) {
+	var bombs []*BombEntry
 	if err := r.db.Find(&bombs).Error; err != nil {
 		return nil, err
 	}
 	return bombs, nil
 }
 
-func (r *bombRepository) FindAllByUserId(userId int) ([]*Bomb, error) {
-	var bombs []*Bomb
+func (r *bombRepository) FindAllByUserId(userId int) ([]*BombEntry, error) {
+	var bombs []*BombEntry
 	if err := r.db.Where("type_bomb = ?", userId).Find(&bombs).Error; err != nil {
 		return nil, err
 	}
@@ -54,15 +54,15 @@ func (r *bombRepository) FindAllByUserId(userId int) ([]*Bomb, error) {
 	return bombs, nil
 }
 
-func (r *bombRepository) Find(id int) (*Bomb, error) {
-	var bomb Bomb
+func (r *bombRepository) FindById(id int) (*BombEntry, error) {
+	var bomb BombEntry
 	if err := r.db.Find(&bomb, id).Error; err != nil {
 		return nil, err
 	}
 	return &bomb, nil
 }
 
-func (r *bombRepository) Update(bomb *Bomb) (*Bomb, error) {
+func (r *bombRepository) Update(bomb *BombEntry) (*BombEntry, error) {
 	if err := r.db.Save(bomb).Error; err != nil {
 		return nil, err
 	}
@@ -70,7 +70,7 @@ func (r *bombRepository) Update(bomb *Bomb) (*Bomb, error) {
 }
 
 func (r *bombRepository) Delete(id int) error {
-	if err := r.db.Delete(&Bomb{}, id).Error; err != nil {
+	if err := r.db.Delete(&BombEntry{}, id).Error; err != nil {
 		return err
 	}
 	return nil

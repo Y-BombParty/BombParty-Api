@@ -40,7 +40,7 @@ func (c *BombConfig) CreateBomb(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	bombEntry := dbmodel.Bomb{
+	bombEntry := dbmodel.BombEntry{
 		Lat:      req.Lat,
 		Long:     req.Long,
 		TypeBomb: req.TypeBomb,
@@ -87,7 +87,7 @@ func (c *BombConfig) GetBomb(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	bomb, err := c.BombRepository.Find(id)
+	bomb, err := c.BombRepository.FindById(id)
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
 		render.JSON(w, r, map[string]string{"error": "Bomb not found"})
@@ -196,7 +196,7 @@ func (c *BombConfig) UpdateBomb(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	bomb, err := c.BombRepository.Find(id)
+	bomb, err := c.BombRepository.FindById(id)
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
 		render.JSON(w, r, map[string]string{"error": "Bomb not found"})

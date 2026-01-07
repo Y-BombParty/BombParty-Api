@@ -105,10 +105,10 @@ func (config *GameConfig) GetByIdHandler(w http.ResponseWriter, r *http.Request)
 
 	for _, team := range entries.Teams {
 		teams = append(teams, &model.TeamResponse{
-			Score:  team.score,
+			Score:  team.Score,
 			Name:   team.Name,
-			Color:  team.color,
-			IDGame: team.idgame})
+			Color:  team.Color,
+			IDGame: team.IDGame})
 	}
 
 	res := &model.GameResponse{
@@ -146,10 +146,10 @@ func (config *GameConfig) GetAlldHandler(w http.ResponseWriter, r *http.Request)
 	for _, game := range entries {
 		for _, team := range game.Teams {
 			teams = append(teams, &model.TeamResponse{
-				Score:  team.score,
+				Score:  team.Score,
 				Name:   team.Name,
-				Color:  team.color,
-				IDGame: team.idgame})
+				Color:  team.Color,
+				IDGame: team.IDGame})
 		}
 
 		res = append(res,
@@ -227,10 +227,10 @@ func (config *GameConfig) UpdateHandler(w http.ResponseWriter, r *http.Request) 
 	for _, team := range entries.Teams {
 		teams = append(teams,
 			&model.TeamResponse{
-				Score:  team.score,
+				Score:  team.Score,
 				Name:   team.Name,
-				Color:  team.color,
-				IDGame: team.idgame})
+				Color:  team.Color,
+				IDGame: team.IDGame})
 	}
 
 	res := &model.GameResponse{
