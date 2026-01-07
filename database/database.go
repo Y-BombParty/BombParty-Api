@@ -31,6 +31,7 @@ func Migrate(db *gorm.DB) {
 	db.AutoMigrate(
 		&dbmodel.GameEntry{},
 		&dbmodel.TeamEntry{},
+		&dbmodel.BombEntry{},
 	)
 
 	log.Println("Database migrated successfully")
