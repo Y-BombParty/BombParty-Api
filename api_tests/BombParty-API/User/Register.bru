@@ -18,6 +18,10 @@ body:json {
   }
 }
 
+vars:pre-request {
+  urlApi: http://localhost:8080/api/v1/ 
+}
+
 script:post-response {
   var jwt = res.body.token;
   bru.setEnvVar("jwtToken",jwt)
