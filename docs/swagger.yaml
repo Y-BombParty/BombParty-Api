@@ -1,4 +1,23 @@
 definitions:
+  dbmodel.TeamEntry:
+    properties:
+      color:
+        type: string
+      created_at:
+        type: string
+      deleted_at:
+        type: string
+      idgame:
+        type: string
+      idteam:
+        type: string
+      name:
+        type: string
+      score:
+        type: integer
+      updated_at:
+        type: string
+    type: object
   model.BombRequest:
     properties:
       lat:
@@ -33,6 +52,58 @@ definitions:
         type: number
       type_bomb:
         type: string
+    type: object
+  model.GameRequest:
+    properties:
+      center_latitude:
+        type: number
+      center_longitude:
+        type: number
+      ending_date:
+        type: string
+      size:
+        type: number
+      starting_date:
+        type: string
+    type: object
+  model.GameResponse:
+    properties:
+      center_latitude:
+        type: number
+      center_longitude:
+        type: number
+      ending_date:
+        type: string
+      size:
+        type: number
+      starting_date:
+        type: string
+      teams:
+        items:
+          $ref: '#/definitions/model.TeamResponse'
+        type: array
+    type: object
+  model.TeamRequest:
+    properties:
+      color:
+        type: string
+      id_game:
+        type: string
+      name:
+        type: string
+      score:
+        type: integer
+    type: object
+  model.TeamResponse:
+    properties:
+      color:
+        type: string
+      id_game:
+        type: string
+      name:
+        type: string
+      score:
+        type: integer
     type: object
 info:
   contact: {}
@@ -259,4 +330,345 @@ paths:
       summary: List bombs by user
       tags:
       - Bombs
+  /game:
+    post:
+      consumes:
+      - application/json
+      description: Creates a new Game entry in the database
+      parameters:
+      - description: Game creation payload
+        in: body
+        name: Game
+        required: true
+        schema:
+          $ref: '#/definitions/model.GameRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.GameResponse'
+        "400":
+          description: Invalid request payload
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Failed to create Game
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Create a new Game
+      tags:
+      - games
+  /game/{id}:
+    get:
+      description: Retrieves a specific game from the database by its ID, including
+        associated teams
+      parameters:
+      - description: game ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.GameResponse'
+        "404":
+          description: Game not found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Failed to find specific game
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get game by ID
+      tags:
+      - games
+  /games:
+    get:
+      description: Retrieves a list of all games from the database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.GameResponse'
+            type: array
+        "500":
+          description: Failed to retrieve games
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get all games
+      tags:
+      - games
+  /games/{id}:
+    delete:
+      description: Deletes a game from the database by its ID
+      parameters:
+      - description: Game ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Game deleted successfully
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Game not found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Failed to delete game
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Delete a game
+      tags:
+      - games
+    patch:
+      consumes:
+      - application/json
+      description: Updates an existing game's information in the database
+      parameters:
+      - description: Game ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Game update payload
+        in: body
+        name: game
+        required: true
+        schema:
+          $ref: '#/definitions/model.GameRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.GameResponse'
+        "400":
+          description: Invalid request payload
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Game not found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Failed to update game
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Update a game
+      tags:
+      - games
+  /teams:
+    get:
+      description: Retrieve all teams
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dbmodel.TeamEntry'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get all teams
+      tags:
+      - Teams
+    post:
+      consumes:
+      - application/json
+      description: Create a new team linked to a game
+      parameters:
+      - description: Team payload
+        in: body
+        name: team
+        required: true
+        schema:
+          $ref: '#/definitions/model.TeamRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dbmodel.TeamEntry'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create a team
+      tags:
+      - Teams
+  /teams/{id}:
+    delete:
+      description: Delete a team by ID
+      parameters:
+      - description: Team ID (UUID)
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Delete a team
+      tags:
+      - Teams
+    get:
+      description: Retrieve a team by its UUID
+      parameters:
+      - description: Team ID (UUID)
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dbmodel.TeamEntry'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get team by ID
+      tags:
+      - Teams
+    put:
+      consumes:
+      - application/json
+      description: Update an existing team
+      parameters:
+      - description: Team ID (UUID)
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Updated team payload
+        in: body
+        name: team
+        required: true
+        schema:
+          $ref: '#/definitions/model.TeamRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dbmodel.TeamEntry'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Update a team
+      tags:
+      - Teams
 swagger: "2.0"
