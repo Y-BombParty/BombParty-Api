@@ -2,7 +2,7 @@ package game
 
 import (
 	"bombparty.com/bombparty-api/config"
-	//"bombparty.com/bombparty-api/pkg/authentication"
+	"bombparty.com/bombparty-api/pkg/authentication"
 
 	"github.com/go-chi/chi/v5"
 )
@@ -15,7 +15,7 @@ func Routes(configuration *config.Config) chi.Router {
 
 	// Routes protected by authentication
 	router.Group(func(router chi.Router) {
-		//router.Use(authentication.AuthMiddleware(""))
+		router.Use(authentication.AuthMiddleware(configuration.JwtKey))
 
 		router.Get("/", gameConfig.GetAlldHandler)
 		router.Get("/{id}", gameConfig.GetByIdHandler)

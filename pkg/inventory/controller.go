@@ -5,7 +5,7 @@ import (
 
 	"bombparty.com/bombparty-api/config"
 	"bombparty.com/bombparty-api/database/dbmodel"
-	"bombparty.com/bombparty-api/pkg/models"
+	"bombparty.com/bombparty-api/pkg/model"
 	"github.com/go-chi/render"
 )
 
@@ -67,7 +67,7 @@ func (config *InventoryConfig) InitUserInventory(w http.ResponseWriter, r *http.
 }
 
 func (config *InventoryConfig) ChangeBombsAmount(w http.ResponseWriter, r *http.Request) {
-	req := &models.InventoryBombAmountChangePayload{}
+	req := &model.InventoryBombAmountChangePayload{}
 	if err := render.Bind(r, req); err != nil {
 		render.JSON(w, r, map[string]string{"message": "Invalid Payload", "error": err.Error()})
 		return
@@ -90,20 +90,20 @@ func (config *InventoryConfig) ChangeBombsAmount(w http.ResponseWriter, r *http.
 
 }
 
-func convertToResponse(inventory *dbmodel.InventoryEntry) models.InventoryElement {
-	return models.InventoryElement{
+func convertToResponse(inventory *dbmodel.InventoryEntry) model.InventoryElement {
+	return model.InventoryElement{
 		TypeBomb: inventory.TypeBomb,
 		Amount:   inventory.Amount,
 	}
 }
 
-func convertToUserInventoryResponse(user dbmodel.UserEntry, inventories []*dbmodel.InventoryEntry) models.InventoryResponse {
-	var elements []models.InventoryElement
+func convertToUserInventoryResponse(user dbmodel.UserEntry, inventories []*dbmodel.InventoryEntry) model.InventoryResponse {
+	var elements []model.InventoryElement
 	for _, ele := range inventories {
 		elements = append(elements, convertToResponse(ele))
 	}
 
-	return models.InventoryResponse{
+	return model.InventoryResponse{
 		IDUser:   user.IDUser,
 		Elements: elements,
 	}

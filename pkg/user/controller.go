@@ -6,7 +6,7 @@ import (
 	"bombparty.com/bombparty-api/config"
 	"bombparty.com/bombparty-api/database/dbmodel"
 	"bombparty.com/bombparty-api/pkg/authentication"
-	"bombparty.com/bombparty-api/pkg/models"
+	"bombparty.com/bombparty-api/pkg/model"
 	"github.com/go-chi/render"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -20,7 +20,7 @@ func New(config *config.Config) *UserConfig {
 }
 
 func (config *UserConfig) Register(w http.ResponseWriter, r *http.Request) {
-	req := &models.UserCreatePayload{}
+	req := &model.UserCreatePayload{}
 	if err := render.Bind(r, req); err != nil {
 		render.JSON(w, r, map[string]string{"message": "Error with the payload", "error": err.Error()})
 		return
@@ -48,7 +48,7 @@ func (config *UserConfig) Register(w http.ResponseWriter, r *http.Request) {
 }
 
 func (config *UserConfig) Login(w http.ResponseWriter, r *http.Request) {
-	req := &models.UserLoginPayload{}
+	req := &model.UserLoginPayload{}
 	if err := render.Bind(r, req); err != nil {
 		render.JSON(w, r, map[string]string{"message": "Error with the payload", "error": err.Error()})
 		return
@@ -71,7 +71,7 @@ func (config *UserConfig) Login(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func createUserEntryFromRegister(user *models.UserCreatePayload) *dbmodel.UserEntry {
+func createUserEntryFromRegister(user *model.UserCreatePayload) *dbmodel.UserEntry {
 	return &dbmodel.UserEntry{
 		UserName: user.UserName,
 		Email:    user.Email,
@@ -79,7 +79,7 @@ func createUserEntryFromRegister(user *models.UserCreatePayload) *dbmodel.UserEn
 	}
 }
 
-func createUserEntryFromLogin(user *models.UserLoginPayload) *dbmodel.UserEntry {
+func createUserEntryFromLogin(user *model.UserLoginPayload) *dbmodel.UserEntry {
 	return &dbmodel.UserEntry{
 		Email:    user.Email,
 		Password: user.Password,

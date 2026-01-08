@@ -2,7 +2,7 @@ package bomb
 
 import (
 	"bombparty.com/bombparty-api/config"
-	//"bombparty.com/bombparty-api/pkg/authentication"
+	"bombparty.com/bombparty-api/pkg/authentication"
 
 	"github.com/go-chi/chi/v5"
 )
@@ -12,7 +12,7 @@ func Routes(configuration *config.Config) chi.Router {
 	router := chi.NewRouter()
 
 	router.Group(func(r chi.Router) {
-		//r.Use(authentication.AuthMiddleware("your_secret_key"))
+		r.Use(authentication.AuthMiddleware(configuration.JwtKey))
 
 		// Create
 		r.Post("/", bombConfig.CreateBomb)
