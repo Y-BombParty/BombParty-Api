@@ -20,7 +20,7 @@ type InventoryRepository interface {
 	FindAll() ([]*InventoryEntry, error)
 	FindByUser(user UserEntry) ([]*InventoryEntry, error)
 	ChangeBombsAmount(user UserEntry, typeBomb string, amount int) (*InventoryEntry, error)
-	AddNewBombType(user UserEntry, typeBomb string) (*InventoryEntry, error)
+	AddNewBombType(user UserEntry, typeBomb string, startingAmount int) (*InventoryEntry, error)
 	InitUserInventory(user UserEntry) ([]*InventoryEntry, error)
 }
 
@@ -53,17 +53,18 @@ func (r *inventoryRepository) ChangeBombsAmount(user UserEntry, typeBomb string,
 	if err != nil {
 		return nil, err
 	}
+
 	idx := slices.IndexFunc(userBombs, func(b *InventoryEntry) bool {
 		return b.TypeBomb == typeBomb
 	})
-	userBombs[idx].Amount += amount
+	userBombs[idx].Amount = max(userBombs[idx].Amount+amount, 0)
 	if err = r.db.Where("id_user = ? AND type_bomb = ?", user.IDUser, typeBomb).UpdateColumns(userBombs[idx]).Error; err != nil {
 		return nil, err
 	}
 	return userBombs[idx], nil
 }
 
-func (r *inventoryRepository) AddNewBombType(user UserEntry, typeBomb string) (*InventoryEntry, error) {
+func (r *inventoryRepository) AddNewBombType(user UserEntry, typeBomb string, startingAmount int) (*InventoryEntry, error) {
 	userBombs, err := r.FindByUser(user)
 	if err != nil {
 		return nil, err
@@ -71,6 +72,10 @@ func (r *inventoryRepository) AddNewBombType(user UserEntry, typeBomb string) (*
 
 	for _, ele := range userBombs {
 		if typeBomb == ele.TypeBomb {
+			ele.Amount = startingAmount
+			if err = r.db.Where("id_user = ? AND type_bomb = ?", user.IDUser, typeBomb).UpdateColumns(ele).Error; err != nil {
+				return nil, err
+			}
 			return nil, nil
 		}
 	}
@@ -87,13 +92,13 @@ func (r *inventoryRepository) AddNewBombType(user UserEntry, typeBomb string) (*
 }
 
 func (r *inventoryRepository) InitUserInventory(user UserEntry) ([]*InventoryEntry, error) {
-	if _, err := r.AddNewBombType(user, "classic"); err != nil {
+	if _, err := r.AddNewBombType(user, "classic", 0); err != nil {
 		return nil, err
 	}
-	if _, err := r.AddNewBombType(user, "double"); err != nil {
+	if _, err := r.AddNewBombType(user, "double", 0); err != nil {
 		return nil, err
 	}
-	if _, err := r.AddNewBombType(user, "giant"); err != nil {
+	if _, err := r.AddNewBombType(user, "giant", 0); err != nil {
 		return nil, err
 	}
 	return r.FindByUser(user)
