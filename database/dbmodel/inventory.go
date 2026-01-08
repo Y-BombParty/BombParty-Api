@@ -57,13 +57,24 @@ func (r *inventoryRepository) ChangeBombsAmount(user UserEntry, typeBomb string,
 		return b.TypeBomb == typeBomb
 	})
 	userBombs[idx].Amount += amount
-	if err = r.db.UpdateColumns(userBombs[idx]).Error; err != nil {
+	if err = r.db.Where("id_user = ? AND type_bomb = ?", user.IDUser, typeBomb).UpdateColumns(userBombs[idx]).Error; err != nil {
 		return nil, err
 	}
 	return userBombs[idx], nil
 }
 
 func (r *inventoryRepository) AddNewBombType(user UserEntry, typeBomb string) (*InventoryEntry, error) {
+	userBombs, err := r.FindByUser(user)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, ele := range userBombs {
+		if typeBomb == ele.TypeBomb {
+			return nil, nil
+		}
+	}
+
 	bombType := &InventoryEntry{
 		IDUser:   user.IDUser,
 		TypeBomb: typeBomb,

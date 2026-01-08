@@ -12,5 +12,7 @@ func Routes(config *config.Config) *chi.Mux {
 	router := chi.NewRouter()
 	router.Use(authentication.AuthMiddleware(config.JwtKey))
 	router.Get("/init", inventoryConfig.InitUserInventory)
+	router.Get("/inventory", inventoryConfig.GetUserInventory)
+	router.Post("/add", inventoryConfig.ChangeBombsAmount)
 	return router
 }
