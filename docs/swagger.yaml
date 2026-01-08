@@ -1,0 +1,262 @@
+definitions:
+  model.BombRequest:
+    properties:
+      lat:
+        type: number
+      long:
+        type: number
+      type_bomb:
+        type: string
+    required:
+    - lat
+    - long
+    - type_bomb
+    type: object
+  model.BombResponse:
+    properties:
+      bomb_id:
+        type: integer
+      id_user:
+        type: integer
+      lat:
+        type: number
+      long:
+        type: number
+      type_bomb:
+        type: string
+    type: object
+  model.BombUpdateRequest:
+    properties:
+      lat:
+        type: number
+      long:
+        type: number
+      type_bomb:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /api/v1/bombs:
+    get:
+      consumes:
+      - application/json
+      description: Get all bombs
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.BombResponse'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: List all bombs
+      tags:
+      - Bombs
+    post:
+      consumes:
+      - application/json
+      description: Create a new bomb with the provided data
+      parameters:
+      - description: Bomb data
+        in: body
+        name: bomb
+        required: true
+        schema:
+          $ref: '#/definitions/model.BombRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.BombResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Create a new bomb
+      tags:
+      - Bombs
+  /api/v1/bombs/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a bomb by ID
+      parameters:
+      - description: Bomb ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Delete a bomb
+      tags:
+      - Bombs
+    get:
+      consumes:
+      - application/json
+      description: Get a single bomb by its ID
+      parameters:
+      - description: Bomb ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.BombResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get a bomb by ID
+      tags:
+      - Bombs
+    put:
+      consumes:
+      - application/json
+      description: Update an existing bomb
+      parameters:
+      - description: Bomb ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Bomb update data
+        in: body
+        name: bomb
+        required: true
+        schema:
+          $ref: '#/definitions/model.BombUpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.BombResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Update a bomb
+      tags:
+      - Bombs
+  /api/v1/bombs/user/{userId}:
+    get:
+      consumes:
+      - application/json
+      description: Get all bombs created by a specific user
+      parameters:
+      - description: User ID
+        in: path
+        name: userId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.BombResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: List bombs by user
+      tags:
+      - Bombs
+swagger: "2.0"
