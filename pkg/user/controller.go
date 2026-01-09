@@ -98,6 +98,7 @@ func (config *UserConfig) Login(w http.ResponseWriter, r *http.Request) {
 // @Summary Get Single User
 // @Description Get a utilisateur with their id
 // @Tags User
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id_user query string true "Id User"
