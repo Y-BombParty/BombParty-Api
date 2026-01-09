@@ -7,6 +7,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/joho/godotenv"
 	httpSwagger "github.com/swaggo/http-swagger"
 
 	"bombparty.com/bombparty-api/config"
@@ -18,6 +19,10 @@ import (
 )
 
 func main() {
+	if err := godotenv.Load(); err != nil {
+		log.Fatal("No .env file found")
+	}
+
 	configuration, err := config.New()
 	if err != nil {
 		log.Panicln("Configuration error:", err)
@@ -28,9 +33,10 @@ func main() {
 
 	// Afficher toutes les routes
 	printRoutes(router)
+	log.Println("\nServing on : http://localhost" + configuration.Port + "/api/v1/ \nServing swagger on : http://localhost:7774/swagger/index.html ")
 
-	log.Println("\nServing on : http://localhost:7774/api/v1/ \nServing swagger on : http://localhost:7774/swagger/index.html ")
-	log.Fatal(http.ListenAndServe(":7774", router))
+	log.Println(configuration.JwtKey)
+	log.Fatal(http.ListenAndServe(configuration.Port, router))
 }
 
 func Routes(configuration *config.Config) *chi.Mux {
@@ -48,6 +54,7 @@ func Routes(configuration *config.Config) *chi.Mux {
 
 	router.Mount("/api/v1/bombs", bomb.Routes(configuration))
 	router.Mount("/api/v1/user", user.Routes(configuration))
+	router.Mount("/api/v1/puser", user.ProtectedRoutes(configuration))
 	router.Mount("/api/v1/inventory", inventory.Routes(configuration))
 	router.Mount("/api/v1/games", game.Routes(configuration))
 	router.Mount("/api/v1/teams", team.Routes(configuration))

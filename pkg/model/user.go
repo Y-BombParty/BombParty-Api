@@ -3,6 +3,8 @@ package model
 import (
 	"errors"
 	"net/http"
+
+	"github.com/google/uuid"
 )
 
 type UserCreatePayload struct {
@@ -37,4 +39,21 @@ func (u *UserLoginPayload) Bind(r *http.Request) error {
 		return errors.New("Password cannot be null")
 	}
 	return nil
+}
+
+type UserUpdatePayload struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+	UserName string `json:"user_name"`
+}
+
+func (u *UserUpdatePayload) Bind(r *http.Request) error {
+	return nil
+}
+
+type UserResponse struct {
+	IdUser   uuid.UUID `json:"id_user"`
+	Email    string    `json:"email"`
+	UserName string    `json:"user_name"`
+	IdTeam   uuid.UUID `json:"id_team"`
 }

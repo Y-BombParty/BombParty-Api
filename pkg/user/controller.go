@@ -37,7 +37,7 @@ func (config *UserConfig) Register(w http.ResponseWriter, r *http.Request) {
 	userEntry := createUserEntryFromRegister(req)
 	userEntry, err = config.UserRepository.Register(userEntry)
 
-	token, err := authentication.GenerateToken(config.JwtKey, userEntry.UserName, userEntry.Email)
+	token, err := authentication.GenerateToken(config.JwtKey, userEntry.Email, userEntry.UserName)
 
 	if err != nil {
 		render.JSON(w, r, map[string]string{"message": "Error with the token generation", "error": err.Error()})
@@ -58,9 +58,10 @@ func (config *UserConfig) Login(w http.ResponseWriter, r *http.Request) {
 	user, err := config.UserRepository.Login(userEntry)
 	if err != nil {
 		render.JSON(w, r, map[string]string{"message": "error during login", "error": err.Error()})
+		return
 	}
 
-	token, err := authentication.GenerateToken(config.JwtKey, user.UserName, user.Email)
+	token, err := authentication.GenerateToken(config.JwtKey, user.Email, user.UserName)
 
 	if err != nil {
 		render.JSON(w, r, map[string]string{"message": "Error with the token generation", "error": err.Error()})
@@ -68,6 +69,63 @@ func (config *UserConfig) Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	render.JSON(w, r, map[string]string{"token": token})
+}
+
+func (config *UserConfig) GetOneUser(w http.ResponseWriter, r *http.Request) {
+	id := r.URL.Query().Get("id_user")
+	if id == "" {
+		render.JSON(w, r, map[string]string{"message": "error with query parameters"})
+		return
+	}
+
+	user, err := config.UserRepository.FindOne("id_user", id)
+	if err != nil {
+		render.JSON(w, r, map[string]string{"message": "Error during fetching", "error": err.Error()})
+		return
+	}
+
+	response := convertToResponse(user)
+
+	render.JSON(w, r, response)
+
+}
+
+func (config *UserConfig) Update(w http.ResponseWriter, r *http.Request) {
+	email := r.URL.Query().Get("email")
+	req := &model.UserUpdatePayload{}
+	if err := render.Bind(r, req); err != nil {
+		render.JSON(w, r, map[string]string{"message": "Error with the payload", "error": err.Error()})
+		return
+	}
+	userEntry := createUserEntryFromUpdate(req)
+	user, err := config.UserRepository.Update(userEntry, email)
+	if err != nil {
+		render.JSON(w, r, map[string]string{"message": "Error during the update", "error": err.Error()})
+		return
+	}
+
+	token, err := authentication.GenerateToken(config.JwtKey, user.Email, user.UserName)
+	if err != nil {
+		render.JSON(w, r, map[string]string{"message": "Error with the token generation", "error": err.Error()})
+		return
+	}
+
+	render.JSON(w, r, map[string]string{"token": token})
+}
+
+func (config *UserConfig) DeleteUser(w http.ResponseWriter, r *http.Request) {
+	id := r.URL.Query().Get("id_user")
+	if id == "" {
+		render.JSON(w, r, map[string]string{"message": "error with query parameters"})
+		return
+	}
+
+	err := config.UserRepository.Delete(id)
+	if err != nil {
+		render.JSON(w, r, map[string]string{"message": "Error during fetching", "error": err.Error()})
+		return
+	}
+	render.JSON(w, r, map[string]string{"message": "Deleted user succesfuly"})
 
 }
 
@@ -84,4 +142,24 @@ func createUserEntryFromLogin(user *model.UserLoginPayload) *dbmodel.UserEntry {
 		Email:    user.Email,
 		Password: user.Password,
 	}
+}
+
+func createUserEntryFromUpdate(user *model.UserUpdatePayload) *dbmodel.UserEntry {
+	return &dbmodel.UserEntry{
+		Email:    user.Email,
+		Password: user.Password,
+		UserName: user.UserName,
+	}
+}
+
+func convertToResponse(user *dbmodel.UserEntry) model.UserResponse {
+	response := model.UserResponse{
+		IdUser:   user.IDUser,
+		UserName: user.UserName,
+		Email:    user.Email,
+	}
+	if user.IDTeam != nil {
+		response.IdTeam = *user.IDTeam
+	}
+	return response
 }
