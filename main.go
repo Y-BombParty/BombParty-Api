@@ -29,8 +29,8 @@ func main() {
 	// Afficher toutes les routes
 	printRoutes(router)
 
-	log.Println("\nServing on : http://localhost:8080/api/v1/ \nServing swagger on : http://localhost:8080/swagger/index.html ")
-	log.Fatal(http.ListenAndServe(":8080", router))
+	log.Println("\nServing on : http://localhost:7774/api/v1/ \nServing swagger on : http://localhost:7774/swagger/index.html ")
+	log.Fatal(http.ListenAndServe(":7774", router))
 }
 
 func Routes(configuration *config.Config) *chi.Mux {
@@ -38,7 +38,7 @@ func Routes(configuration *config.Config) *chi.Mux {
 	router.Use(middleware.Logger)
 
 	router.Get("/swagger/*", httpSwagger.Handler(
-		httpSwagger.URL("http://localhost:8080/swagger.json"),
+		httpSwagger.URL("http://localhost:7774/swagger.json"),
 	))
 
 	// Serve Swagger JSON
