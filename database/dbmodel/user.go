@@ -24,6 +24,8 @@ type UserRepository interface {
 	FindOne(filter, value string) (*UserEntry, error)
 	FindAll() ([]*UserEntry, error)
 	Login(entry *UserEntry) (*UserEntry, error)
+	Update(entry *UserEntry, email string) (*UserEntry, error)
+	Delete(idUser string) error
 }
 
 type userRepository struct {
@@ -70,7 +72,7 @@ func (r *userRepository) Login(entry *UserEntry) (*UserEntry, error) {
 		return nil, err
 	}
 	if user == nil {
-		return nil, errors.New("No user found with this email")
+		return nil, errors.New("Invalid email or password")
 	}
 
 	hashedPassword := user.Password
@@ -79,4 +81,45 @@ func (r *userRepository) Login(entry *UserEntry) (*UserEntry, error) {
 	}
 
 	return user, nil
+}
+
+func (r *userRepository) Update(entry *UserEntry, email string) (*UserEntry, error) {
+	user, err := r.FindOne("email", email)
+	if err != nil {
+		return nil, err
+	}
+	if entry.Password != "" {
+		//Update mdp si différent
+		hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(entry.Password), bcrypt.DefaultCost)
+		if bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(entry.Password)) != nil {
+			user.Password = string(hashedPassword)
+		}
+	}
+	if entry.UserName != "" {
+		//Update userName si différent
+		if entry.UserName != user.UserName {
+			user.UserName = entry.UserName
+		}
+	}
+	if entry.Email != "" {
+		//Update email si différents
+		if entry.Email != user.Email {
+			user.Email = entry.Email
+		}
+	}
+	if err := r.db.Where("id_user = ?", user.IDUser).UpdateColumns(user).Error; err != nil {
+		return nil, err
+	}
+	return user, nil
+}
+
+func (r *userRepository) Delete(id string) error {
+	user, err := r.FindOne("id_user", id)
+	if err != nil {
+		return err
+	}
+	if err = r.db.Delete(user).Error; err != nil {
+		return err
+	}
+	return nil
 }

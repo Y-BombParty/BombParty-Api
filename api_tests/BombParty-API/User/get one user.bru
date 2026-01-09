@@ -1,0 +1,15 @@
+meta {
+  name: get one user
+  type: http
+  seq: 4
+}
+
+get {
+  url: http://localhost:7774/api/v1/user/user
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

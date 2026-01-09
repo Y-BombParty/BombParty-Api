@@ -1,12 +1,16 @@
 package model
 
-import "net/http"
+import (
+	"net/http"
+
+	"github.com/google/uuid"
+)
 
 type BombRequest struct {
-	Lat      float32 `json:"lat" binding:"required"`
-	Long     float32 `json:"long" binding:"required"`
-	TypeBomb string  `json:"type_bomb" binding:"required"`
-	//IdUser   int     `json:"id_user" binding:"required"`
+	Lat      float32   `json:"lat" binding:"required"`
+	Long     float32   `json:"long" binding:"required"`
+	TypeBomb string    `json:"type_bomb" binding:"required"`
+	IdUser   uuid.UUID `json:"id_user" binding:"required"`
 }
 
 func (b *BombRequest) Bind(r *http.Request) error {
@@ -24,9 +28,9 @@ func (b *BombUpdateRequest) Bind(r *http.Request) error {
 }
 
 type BombResponse struct {
-	BombId   int     `json:"bomb_id"`
-	Lat      float32 `json:"lat"`
-	Long     float32 `json:"long"`
-	TypeBomb string  `json:"type_bomb"`
-	IdUser   int     `json:"id_user"`
+	BombId   int       `json:"bomb_id"`
+	Lat      float32   `json:"lat"`
+	Long     float32   `json:"long"`
+	TypeBomb string    `json:"type_bomb"`
+	IdUser   uuid.UUID `json:"id_user"`
 }

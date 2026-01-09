@@ -30,7 +30,7 @@ func New(configuration *config.Config) *GameConfig {
 // @Success      200    {object}  model.GameResponse
 // @Failure      400    {object}  map[string]string  "Invalid request payload"
 // @Failure      500    {object}  map[string]string  "Failed to create Game"
-// @Router       /game [post]
+// @Router       /api/v1/game [post]
 func (config *GameConfig) PostHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Get the request
@@ -83,7 +83,7 @@ func (config *GameConfig) PostHandler(w http.ResponseWriter, r *http.Request) {
 // @Success      200  {object}  model.GameResponse
 // @Failure      404  {object}  map[string]string  "Game not found"
 // @Failure      500  {object}  map[string]string  "Failed to find specific game"
-// @Router       /game/{id} [get]
+// @Router       /api/v1/game/{id} [get]
 func (config *GameConfig) GetByIdHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Get the id in the URL
@@ -139,7 +139,7 @@ func (config *GameConfig) GetByIdHandler(w http.ResponseWriter, r *http.Request)
 // @Security     BearerAuth
 // @Success      200     {array}   model.GameResponse
 // @Failure      500     {object}  map[string]string  "Failed to retrieve games"
-// @Router       /games [get]
+// @Router       /api/v1/games [get]
 func (config *GameConfig) GetAlldHandler(w http.ResponseWriter, r *http.Request) {
 
 	entries, err := config.GameRepository.FindAll()
@@ -188,7 +188,7 @@ func (config *GameConfig) GetAlldHandler(w http.ResponseWriter, r *http.Request)
 // @Failure      400    {object}  map[string]string  "Invalid request payload"
 // @Failure      404    {object}  map[string]string  "Game not found"
 // @Failure      500    {object}  map[string]string  "Failed to update game"
-// @Router       /games/{id} [patch]
+// @Router       /api/v1/games/{id} [patch]
 func (config *GameConfig) UpdateHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Get the id in the URL
@@ -286,7 +286,7 @@ func (config *GameConfig) UpdateHandler(w http.ResponseWriter, r *http.Request) 
 // @Success      200  {object}  map[string]string  "Game deleted successfully"
 // @Failure      404  {object}  map[string]string  "Game not found"
 // @Failure      500  {object}  map[string]string  "Failed to delete game"
-// @Router       /games/{id} [delete]
+// @Router       /api/v1/games/{id} [delete]
 func (config *GameConfig) DeleteHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Get the id in the URL

@@ -44,7 +44,7 @@ func (c *BombConfig) CreateBomb(w http.ResponseWriter, r *http.Request) {
 		Lat:      req.Lat,
 		Long:     req.Long,
 		TypeBomb: req.TypeBomb,
-		//IdUser:   req.IdUser,
+		IdUser:   req.IdUser,
 	}
 
 	bomb, err := c.BombRepository.Create(&bombEntry)
@@ -55,11 +55,11 @@ func (c *BombConfig) CreateBomb(w http.ResponseWriter, r *http.Request) {
 	}
 
 	res := &model.BombResponse{
-		BombId:   int(bomb.BombID),
+		BombId:   bomb.BombID,
 		Lat:      bombEntry.Lat,
 		Long:     bombEntry.Long,
 		TypeBomb: bombEntry.TypeBomb,
-		//IdUser:   bombEntry.IdUser,
+		IdUser:   bombEntry.IdUser,
 	}
 	w.WriteHeader(http.StatusCreated)
 	render.JSON(w, r, res)
@@ -98,7 +98,7 @@ func (c *BombConfig) GetBomb(w http.ResponseWriter, r *http.Request) {
 		Lat:      bomb.Lat,
 		Long:     bomb.Long,
 		TypeBomb: bomb.TypeBomb,
-		//IdUser:   bomb.IdUser,
+		IdUser:   bomb.IdUser,
 	}
 	render.JSON(w, r, res)
 }
@@ -127,7 +127,7 @@ func (c *BombConfig) GetAllBombs(w http.ResponseWriter, r *http.Request) {
 			Lat:      bomb.Lat,
 			Long:     bomb.Long,
 			TypeBomb: bomb.TypeBomb,
-			//IdUser:   bomb.IdUser,
+			IdUser:   bomb.IdUser,
 		}
 	}
 	render.JSON(w, r, responses)
@@ -167,7 +167,7 @@ func (c *BombConfig) GetBombsByUserId(w http.ResponseWriter, r *http.Request) {
 			Lat:      bomb.Lat,
 			Long:     bomb.Long,
 			TypeBomb: bomb.TypeBomb,
-			//IdUser:   bomb.IdUser,
+			IdUser:   bomb.IdUser,
 		}
 	}
 	render.JSON(w, r, responses)
@@ -231,7 +231,7 @@ func (c *BombConfig) UpdateBomb(w http.ResponseWriter, r *http.Request) {
 		Lat:      bomb.Lat,
 		Long:     bomb.Long,
 		TypeBomb: bomb.TypeBomb,
-		//IdUser:   bomb.IdUser,
+		IdUser:   bomb.IdUser,
 	}
 	render.JSON(w, r, res)
 }

@@ -3,6 +3,7 @@ package model
 import (
 	"errors"
 	"net/http"
+	"strings"
 	"time"
 )
 
@@ -47,13 +48,31 @@ func (a *GameRequest) Bind(r *http.Request) error {
 }
 
 func (a *GameRequest) ValidateCreate() error {
-	if a.CenterLatitude == nil ||
-		a.CenterLongitude == nil ||
-		a.Size == nil ||
-		a.StartingDate == nil ||
-		a.EndingDate == nil {
-		return errors.New("Missing required fields")
+
+	missing := []string{}
+
+	if a.CenterLatitude == nil {
+		missing = append(missing, "center_latitude")
 	}
+	if a.CenterLongitude == nil {
+		missing = append(missing, "center_longitude")
+	}
+	if a.Size == nil {
+		missing = append(missing, "size")
+	}
+	if a.StartingDate == nil {
+		missing = append(missing, "starting_date")
+	}
+	if a.EndingDate == nil {
+		missing = append(missing, "ending_date")
+	}
+
+	// If there is missing fields, return all of theme
+	if len(missing) > 0 {
+		errorMsg := strings.Join(missing, ", ")
+		return errors.New("Missing required fields: " + errorMsg)
+	}
+
 	return nil
 }
 

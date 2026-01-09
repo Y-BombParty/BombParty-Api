@@ -362,7 +362,11 @@ const docTemplate = `{
                 }
             }
         },
+<<<<<<< HEAD
         "/game": {
+=======
+        "/api/v1/game": {
+>>>>>>> pre-release
             "post": {
                 "security": [
                     {
@@ -419,7 +423,11 @@ const docTemplate = `{
                 }
             }
         },
+<<<<<<< HEAD
         "/game/{id}": {
+=======
+        "/api/v1/game/{id}": {
+>>>>>>> pre-release
             "get": {
                 "security": [
                     {
@@ -471,7 +479,11 @@ const docTemplate = `{
                 }
             }
         },
+<<<<<<< HEAD
         "/games": {
+=======
+        "/api/v1/games": {
+>>>>>>> pre-release
             "get": {
                 "security": [
                     {
@@ -508,7 +520,11 @@ const docTemplate = `{
                 }
             }
         },
+<<<<<<< HEAD
         "/games/{id}": {
+=======
+        "/api/v1/games/{id}": {
+>>>>>>> pre-release
             "delete": {
                 "security": [
                     {
@@ -634,7 +650,11 @@ const docTemplate = `{
                 }
             }
         },
+<<<<<<< HEAD
         "/teams": {
+=======
+        "/api/v1/teams": {
+>>>>>>> pre-release
             "get": {
                 "description": "Retrieve all teams",
                 "produces": [
@@ -716,7 +736,11 @@ const docTemplate = `{
                 }
             }
         },
+<<<<<<< HEAD
         "/teams/{id}": {
+=======
+        "/api/v1/teams/{id}": {
+>>>>>>> pre-release
             "get": {
                 "description": "Retrieve a team by its UUID",
                 "produces": [
@@ -885,6 +909,128 @@ const docTemplate = `{
                     }
                 }
             }
+<<<<<<< HEAD
+=======
+        },
+        "/user/login": {
+            "post": {
+                "description": "Authentifie un utilisateur avec son email et mot de passe et retourne un token JWT",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Connexion utilisateur",
+                "parameters": [
+                    {
+                        "description": "Identifiants de connexion",
+                        "name": "credentials",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UserLoginPayload"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Token JWT généré",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erreur avec le payload",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Identifiants invalides",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur serveur",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/register": {
+            "post": {
+                "description": "Enregistre un nouvel utilisateur avec un nom d'utilisateur, email et mot de passe",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Créer un nouveau compte utilisateur",
+                "parameters": [
+                    {
+                        "description": "Informations d'inscription",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UserCreatePayload"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Token JWT généré",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erreur avec le payload",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur serveur",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+>>>>>>> pre-release
         }
     },
     "definitions": {
@@ -920,11 +1066,15 @@ const docTemplate = `{
         "model.BombRequest": {
             "type": "object",
             "required": [
+                "id_user",
                 "lat",
                 "long",
                 "type_bomb"
             ],
             "properties": {
+                "id_user": {
+                    "type": "string"
+                },
                 "lat": {
                     "type": "number"
                 },
@@ -943,7 +1093,7 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "id_user": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "lat": {
                     "type": "number"
@@ -1049,18 +1199,54 @@ const docTemplate = `{
                     "type": "integer"
                 }
             }
+<<<<<<< HEAD
+=======
+        },
+        "model.UserCreatePayload": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.UserLoginPayload": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "BearerAuth": {
+            "description": "Type \"Bearer\" suivi de votre token JWT",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+>>>>>>> pre-release
         }
     }
 }`
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "",
-	Host:             "",
+	Version:          "1.0",
+	Host:             "localhost:7774",
 	BasePath:         "",
 	Schemes:          []string{},
-	Title:            "",
-	Description:      "",
+	Title:            "BombParty API",
+	Description:      "API pour le jeu BombParty",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

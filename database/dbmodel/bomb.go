@@ -1,15 +1,16 @@
 package dbmodel
 
 import (
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
 type BombEntry struct {
-	BombID   uint    `gorm:"primaryKey;autoIncrement;column:bomb_id" json:"bomb_id"`
-	Lat      float32 `json:"lat"`
-	Long     float32 `json:"long"`
-	TypeBomb string  `json:"type_bomb"`
-	// IdUser   int     `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"care_taker"`
+	BombID   int       `gorm:"type:int; primaryKey"`
+	Lat      float32   `json:"lat"`
+	Long     float32   `json:"long"`
+	TypeBomb string    `json:"type_bomb"`
+	IdUser   uuid.UUID `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"care_taker"`
 }
 
 type BombRepository interface {
@@ -20,7 +21,6 @@ type BombRepository interface {
 	Update(bomb *BombEntry) (*BombEntry, error)
 	Delete(id int) error
 }
-
 
 type bombRepository struct {
 	db *gorm.DB

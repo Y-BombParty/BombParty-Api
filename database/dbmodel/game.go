@@ -76,14 +76,14 @@ func (r *gameRepository) FindAll() ([]*GameEntry, error) {
 func (r *gameRepository) Update(entry *GameEntry, id uuid.UUID) (*GameEntry, error) {
 
 	result := r.db.Model(&GameEntry{}).
-		Preload("Teams").
-		Where("id = ?", id).
+		Where("id_game = ?", id).
+		Omit("Teams").
 		Updates(map[string]interface{}{
-			"centerlatitude":  entry.CenterLatitude,
-			"centerlongitude": entry.CenterLongitude,
-			"size":            entry.Size,
-			"startingdate":    entry.StartingDate,
-			"endingdate":      entry.EndingDate,
+			"center_latitude":  entry.CenterLatitude,
+			"center_longitude": entry.CenterLongitude,
+			"size":             entry.Size,
+			"starting_date":    entry.StartingDate,
+			"ending_date":      entry.EndingDate,
 		})
 
 	if result.Error != nil {
