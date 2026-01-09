@@ -24,6 +24,6 @@ func ProtectedRoutes(config *config.Config) *chi.Mux {
 	router.Use(authentication.AuthMiddleware(config.JwtKey))
 	router.Put("/update", UserConfig.Update)
 	router.Delete("/delete", UserConfig.DeleteUser)
-	router.Get("/user", userConfig.GetOneUser)
+	router.Get("/user", UserConfig.GetOneUser)
 	return router
 }
