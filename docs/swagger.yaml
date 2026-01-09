@@ -694,7 +694,7 @@ paths:
       summary: Update a team
       tags:
       - Teams
-  /user/login:
+  /api/v1/user/login:
     post:
       consumes:
       - application/json
@@ -737,7 +737,7 @@ paths:
       summary: Connexion utilisateur
       tags:
       - auth
-  /user/register:
+  /api/v1/user/register:
     post:
       consumes:
       - application/json

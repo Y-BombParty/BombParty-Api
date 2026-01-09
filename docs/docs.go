@@ -886,7 +886,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/login": {
+        "/api/v1/user/login": {
             "post": {
                 "description": "Authentifie un utilisateur avec son email et mot de passe et retourne un token JWT",
                 "consumes": [
@@ -950,7 +950,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/register": {
+        "/api/v1/user/register": {
             "post": {
                 "description": "Enregistre un nouvel utilisateur avec un nom d'utilisateur, email et mot de passe",
                 "consumes": [

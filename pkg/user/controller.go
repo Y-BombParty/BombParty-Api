@@ -29,7 +29,7 @@ func New(config *config.Config) *UserConfig {
 // @Success 200 {object} map[string]string "Token JWT généré"
 // @Failure 400 {object} map[string]string "Erreur avec le payload"
 // @Failure 500 {object} map[string]string "Erreur serveur"
-// @Router /user/register [post]
+// @Router /api/v1/user/register [post]
 func (config *UserConfig) Register(w http.ResponseWriter, r *http.Request) {
 	req := &model.UserCreatePayload{}
 	if err := render.Bind(r, req); err != nil {
@@ -69,7 +69,7 @@ func (config *UserConfig) Register(w http.ResponseWriter, r *http.Request) {
 // @Failure 400 {object} map[string]string "Erreur avec le payload"
 // @Failure 401 {object} map[string]string "Identifiants invalides"
 // @Failure 500 {object} map[string]string "Erreur serveur"
-// @Router /user/login [post]
+// @Router /api/v1/user/login [post]
 func (config *UserConfig) Login(w http.ResponseWriter, r *http.Request) {
 	req := &model.UserLoginPayload{}
 	if err := render.Bind(r, req); err != nil {
