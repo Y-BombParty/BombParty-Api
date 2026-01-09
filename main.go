@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 	"strings"
 
 	"github.com/go-chi/chi/v5"
@@ -18,7 +17,6 @@ import (
 	"bombparty.com/bombparty-api/pkg/inventory"
 	"bombparty.com/bombparty-api/pkg/team"
 	"bombparty.com/bombparty-api/pkg/user"
-	"github.com/joho/godotenv"
 )
 
 // @title BombParty API
@@ -32,15 +30,6 @@ import (
 // @description Type "Bearer" suivi de votre token JWT
 
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
-	
-	PORT := os.Getenv("PORT")
-	if PORT == "" {
-		PORT = "8080" // Valeur par défaut
-	}
 
 	configuration, err := config.New()
 	if err != nil {
@@ -48,15 +37,15 @@ func main() {
 	}
 
 	// Initialisation des routes
-	router := Routes(configuration, PORT)
+	router := Routes(configuration, configuration.Port)
 
 	// Afficher toutes les routes
 	printRoutes(router)
 
-	log.Printf("\nServing on: http://localhost%s/api/v1/", PORT)
-	log.Printf("Serving swagger on: http://localhost%s/swagger/index.html\n", PORT)
+	log.Printf("\nServing on: http://localhost%s/api/v1/", configuration.Port)
+	log.Printf("Serving swagger on: http://localhost%s/swagger/index.html\n", configuration.Port)
 	
-	address := fmt.Sprintf("%s", PORT)
+	address := fmt.Sprintf("%s", configuration.Port)
 	log.Fatal(http.ListenAndServe(address, router))
 }
 
@@ -65,7 +54,7 @@ func Routes(configuration *config.Config, port string) *chi.Mux {
 	router.Use(middleware.Logger)
 
 	// URL Swagger dynamique basée sur le port
-	swaggerURL := fmt.Sprintf("http://localhost%s/swagger/doc.json", port)
+	swaggerURL := fmt.Sprintf("http://localhost%s/swagger/doc.json", configuration.Port)
 	
 	router.Get("/swagger/*", httpSwagger.Handler(
 		httpSwagger.URL(swaggerURL),
