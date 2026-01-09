@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"strings"
@@ -11,12 +12,22 @@ import (
 	httpSwagger "github.com/swaggo/http-swagger"
 
 	"bombparty.com/bombparty-api/config"
+	_ "bombparty.com/bombparty-api/docs" // Import pour initialiser Swagger
 	"bombparty.com/bombparty-api/pkg/bomb"
 	"bombparty.com/bombparty-api/pkg/game"
 	"bombparty.com/bombparty-api/pkg/inventory"
 	"bombparty.com/bombparty-api/pkg/team"
 	"bombparty.com/bombparty-api/pkg/user"
 )
+
+// @title BombParty API
+// @version 1.0
+// @description API pour le jeu BombParty
+// @host localhost:7774
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
+// @description Type "Bearer" suivi de votre token JWT
 
 func main() {
 	if err := godotenv.Load(); err != nil {
@@ -28,27 +39,32 @@ func main() {
 		log.Panicln("Configuration error:", err)
 	}
 
+
 	// Initialisation des routes
 	router := Routes(configuration)
 
 	// Afficher toutes les routes
 	printRoutes(router)
-	log.Println("\nServing on : http://localhost" + configuration.Port + "/api/v1/ \nServing swagger on : http://localhost:7774/swagger/index.html ")
+	log.Printf("\nServing on: http://localhost%s/api/v1/", configuration.Port)
+	log.Printf("Serving swagger on: http://localhost%s/swagger/index.html\n", configuration.Port)
 
-	log.Println(configuration.JwtKey)
-	log.Fatal(http.ListenAndServe(configuration.Port, router))
+	address := fmt.Sprintf("%s", configuration.Port)
+	log.Fatal(http.ListenAndServe(address, router))
 }
 
 func Routes(configuration *config.Config) *chi.Mux {
 	router := chi.NewRouter()
 	router.Use(middleware.Logger)
 
+	// URL Swagger dynamique basée sur le port
+	swaggerURL := fmt.Sprintf("http://localhost%s/swagger/doc.json", configuration.Port)
+
 	router.Get("/swagger/*", httpSwagger.Handler(
-		httpSwagger.URL("http://localhost:7774/swagger.json"),
+		httpSwagger.URL(swaggerURL),
 	))
 
 	// Serve Swagger JSON
-	router.Get("/swagger.json", func(w http.ResponseWriter, r *http.Request) {
+	router.Get("/swagger/doc.json", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "docs/swagger.json")
 	})
 

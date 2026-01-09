@@ -19,6 +19,17 @@ func New(config *config.Config) *UserConfig {
 	return &UserConfig{config}
 }
 
+// Register godoc
+// @Summary Créer un nouveau compte utilisateur
+// @Description Enregistre un nouvel utilisateur avec un nom d'utilisateur, email et mot de passe
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Param user body model.UserCreatePayload true "Informations d'inscription"
+// @Success 200 {object} map[string]string "Token JWT généré"
+// @Failure 400 {object} map[string]string "Erreur avec le payload"
+// @Failure 500 {object} map[string]string "Erreur serveur"
+// @Router /user/register [post]
 func (config *UserConfig) Register(w http.ResponseWriter, r *http.Request) {
 	req := &model.UserCreatePayload{}
 	if err := render.Bind(r, req); err != nil {
@@ -47,6 +58,18 @@ func (config *UserConfig) Register(w http.ResponseWriter, r *http.Request) {
 	render.JSON(w, r, map[string]string{"token": token})
 }
 
+// Login godoc
+// @Summary Connexion utilisateur
+// @Description Authentifie un utilisateur avec son email et mot de passe et retourne un token JWT
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Param credentials body model.UserLoginPayload true "Identifiants de connexion"
+// @Success 200 {object} map[string]string "Token JWT généré"
+// @Failure 400 {object} map[string]string "Erreur avec le payload"
+// @Failure 401 {object} map[string]string "Identifiants invalides"
+// @Failure 500 {object} map[string]string "Erreur serveur"
+// @Router /user/login [post]
 func (config *UserConfig) Login(w http.ResponseWriter, r *http.Request) {
 	req := &model.UserLoginPayload{}
 	if err := render.Bind(r, req); err != nil {
