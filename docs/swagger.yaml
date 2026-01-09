@@ -105,6 +105,15 @@ definitions:
       password:
         type: string
     type: object
+  model.UserUpdatePayload:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      user_name:
+        type: string
+    type: object
 host: localhost:7774
 info:
   contact: {}
@@ -508,6 +517,86 @@ paths:
       summary: Update a game
       tags:
       - games
+  /api/v1/puser/delete:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a utilisateur with their id
+      parameters:
+      - description: Id User
+        in: query
+        name: id_user
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User deleted
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: User not found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Delete User
+      tags:
+      - User
+  /api/v1/puser/update:
+    put:
+      consumes:
+      - application/json
+      description: Update a utilisateur with their email and get another jwtToken
+      parameters:
+      - description: Email
+        in: query
+        name: email
+        required: true
+        type: string
+      - description: User update data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.UserUpdatePayload'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'token : tokenJwt'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: User not found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Update User
+      tags:
+      - User
   /api/v1/teams:
     get:
       description: Retrieve all teams
@@ -765,6 +854,41 @@ paths:
       summary: Créer un nouveau compte utilisateur
       tags:
       - auth
+  /api/v1/user/user:
+    get:
+      consumes:
+      - application/json
+      description: Get a utilisateur with their id
+      parameters:
+      - description: Id User
+        in: query
+        name: id_user
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User fetched
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: User not found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get Single User
+      tags:
+      - User
 securityDefinitions:
   BearerAuth:
     description: Type "Bearer" suivi de votre token JWT

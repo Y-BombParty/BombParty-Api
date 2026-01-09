@@ -94,6 +94,17 @@ func (config *UserConfig) Login(w http.ResponseWriter, r *http.Request) {
 	render.JSON(w, r, map[string]string{"token": token})
 }
 
+// GetOneUser godoc
+// @Summary Get Single User
+// @Description Get a utilisateur with their id
+// @Tags User
+// @Accept json
+// @Produce json
+// @Param id_user query string true "Id User"
+// @Success 200 {object} map[string]string "User fetched"
+// @Failure 404 {object} map[string]string "User not found"
+// @Failure 500 {object} map[string]string "Server Error"
+// @Router /api/v1/user/user [get]
 func (config *UserConfig) GetOneUser(w http.ResponseWriter, r *http.Request) {
 	id := r.URL.Query().Get("id_user")
 	if id == "" {
@@ -113,6 +124,19 @@ func (config *UserConfig) GetOneUser(w http.ResponseWriter, r *http.Request) {
 
 }
 
+// UpdateUser godoc
+// @Summary Update User
+// @Description Update a utilisateur with their email and get another jwtToken
+// @Tags User
+// @Security BearerAuth
+// @Accept json
+// @Produce json
+// @Param email query string true "Email"
+// @Param user body model.UserUpdatePayload true "User update data"
+// @Success 200 {object} map[string]string "token : tokenJwt"
+// @Failure 404 {object} map[string]string "User not found"
+// @Failure 500 {object} map[string]string "Server Error"
+// @Router /api/v1/puser/update [put]
 func (config *UserConfig) Update(w http.ResponseWriter, r *http.Request) {
 	email := r.URL.Query().Get("email")
 	req := &model.UserUpdatePayload{}
@@ -136,6 +160,18 @@ func (config *UserConfig) Update(w http.ResponseWriter, r *http.Request) {
 	render.JSON(w, r, map[string]string{"token": token})
 }
 
+// DeleteUser godoc
+// @Summary Delete User
+// @Description Delete a utilisateur with their id
+// @Tags User
+// @Security BearerAuth
+// @Accept json
+// @Produce json
+// @Param 	id_user 	query string true "Id User"
+// @Success 200 {object} map[string]string "User deleted"
+// @Failure 404 {object} map[string]string "User not found"
+// @Failure 500 {object} map[string]string "Server Error"
+// @Router /api/v1/puser/delete [delete]
 func (config *UserConfig) DeleteUser(w http.ResponseWriter, r *http.Request) {
 	id := r.URL.Query().Get("id_user")
 	if id == "" {
