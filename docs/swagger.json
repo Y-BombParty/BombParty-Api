@@ -7,14 +7,10 @@
         "version": "1.0"
     },
     "host": "localhost:7774",
-    "basePath": "/api/v1",
     "paths": {
         "/api/v1/bombs": {
             "get": {
                 "security": [
-                    {
-                        "ApiKeyAuth": []
-                    },
                     {
                         "BearerAuth": []
                     }
@@ -30,15 +26,6 @@
                     "Bombs"
                 ],
                 "summary": "List all bombs",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -63,9 +50,6 @@
             "post": {
                 "security": [
                     {
-                        "ApiKeyAuth": []
-                    },
-                    {
                         "BearerAuth": []
                     }
                 ],
@@ -81,13 +65,6 @@
                 ],
                 "summary": "Create a new bomb",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "description": "Bomb data",
                         "name": "bomb",
@@ -130,9 +107,6 @@
             "get": {
                 "security": [
                     {
-                        "ApiKeyAuth": []
-                    },
-                    {
                         "BearerAuth": []
                     }
                 ],
@@ -148,13 +122,6 @@
                 ],
                 "summary": "List bombs by user",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "type": "integer",
                         "description": "User ID",
@@ -198,9 +165,6 @@
             "get": {
                 "security": [
                     {
-                        "ApiKeyAuth": []
-                    },
-                    {
                         "BearerAuth": []
                     }
                 ],
@@ -216,13 +180,6 @@
                 ],
                 "summary": "Get a bomb by ID",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "type": "integer",
                         "description": "Bomb ID",
@@ -270,9 +227,6 @@
             "put": {
                 "security": [
                     {
-                        "ApiKeyAuth": []
-                    },
-                    {
                         "BearerAuth": []
                     }
                 ],
@@ -288,13 +242,6 @@
                 ],
                 "summary": "Update a bomb",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "type": "integer",
                         "description": "Bomb ID",
@@ -351,9 +298,6 @@
             "delete": {
                 "security": [
                     {
-                        "ApiKeyAuth": []
-                    },
-                    {
                         "BearerAuth": []
                     }
                 ],
@@ -369,13 +313,6 @@
                 ],
                 "summary": "Delete a bomb",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "type": "integer",
                         "description": "Bomb ID",
@@ -422,9 +359,6 @@
             "post": {
                 "security": [
                     {
-                        "ApiKeyAuth": []
-                    },
-                    {
                         "BearerAuth": []
                     }
                 ],
@@ -440,13 +374,6 @@
                 ],
                 "summary": "Create a new Game",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "description": "Game creation payload",
                         "name": "Game",
@@ -489,9 +416,6 @@
             "get": {
                 "security": [
                     {
-                        "ApiKeyAuth": []
-                    },
-                    {
                         "BearerAuth": []
                     }
                 ],
@@ -504,13 +428,6 @@
                 ],
                 "summary": "Get game by ID",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "type": "string",
                         "description": "game ID",
@@ -551,9 +468,6 @@
             "get": {
                 "security": [
                     {
-                        "ApiKeyAuth": []
-                    },
-                    {
                         "BearerAuth": []
                     }
                 ],
@@ -565,15 +479,6 @@
                     "games"
                 ],
                 "summary": "Get all games",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -600,9 +505,6 @@
             "delete": {
                 "security": [
                     {
-                        "ApiKeyAuth": []
-                    },
-                    {
                         "BearerAuth": []
                     }
                 ],
@@ -615,13 +517,6 @@
                 ],
                 "summary": "Delete a game",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "type": "string",
                         "description": "Game ID",
@@ -663,9 +558,6 @@
             "patch": {
                 "security": [
                     {
-                        "ApiKeyAuth": []
-                    },
-                    {
                         "BearerAuth": []
                     }
                 ],
@@ -681,13 +573,6 @@
                 ],
                 "summary": "Update a game",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "type": "string",
                         "description": "Game ID",
@@ -744,11 +629,6 @@
         },
         "/api/v1/teams": {
             "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Retrieve all teams",
                 "produces": [
                     "application/json"
@@ -757,15 +637,6 @@
                     "Teams"
                 ],
                 "summary": "Get all teams",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -788,11 +659,6 @@
                 }
             },
             "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Create a new team linked to a game",
                 "consumes": [
                     "application/json"
@@ -805,13 +671,6 @@
                 ],
                 "summary": "Create a team",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "description": "Team payload",
                         "name": "team",
@@ -852,11 +711,6 @@
         },
         "/api/v1/teams/{id}": {
             "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Retrieve a team by its UUID",
                 "produces": [
                     "application/json"
@@ -866,13 +720,6 @@
                 ],
                 "summary": "Get team by ID",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "type": "string",
                         "description": "Team ID (UUID)",
@@ -909,11 +756,6 @@
                 }
             },
             "put": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Update an existing team",
                 "consumes": [
                     "application/json"
@@ -926,13 +768,6 @@
                 ],
                 "summary": "Update a team",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "type": "string",
                         "description": "Team ID (UUID)",
@@ -987,11 +822,6 @@
                 }
             },
             "delete": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Delete a team by ID",
                 "produces": [
                     "application/json"
@@ -1001,13 +831,6 @@
                 ],
                 "summary": "Delete a team",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "type": "string",
                         "description": "Team ID (UUID)",
@@ -1046,6 +869,125 @@
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/login": {
+            "post": {
+                "description": "Authentifie un utilisateur avec son email et mot de passe et retourne un token JWT",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Connexion utilisateur",
+                "parameters": [
+                    {
+                        "description": "Identifiants de connexion",
+                        "name": "credentials",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UserLoginPayload"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Token JWT généré",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erreur avec le payload",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Identifiants invalides",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur serveur",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/register": {
+            "post": {
+                "description": "Enregistre un nouvel utilisateur avec un nom d'utilisateur, email et mot de passe",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Créer un nouveau compte utilisateur",
+                "parameters": [
+                    {
+                        "description": "Informations d'inscription",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UserCreatePayload"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Token JWT généré",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erreur avec le payload",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur serveur",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -1097,7 +1039,7 @@
             ],
             "properties": {
                 "id_user": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "lat": {
                     "type": "number"
@@ -1117,7 +1059,7 @@
                     "type": "integer"
                 },
                 "id_user": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "lat": {
                     "type": "number"
@@ -1221,6 +1163,31 @@
                 },
                 "score": {
                     "type": "integer"
+                }
+            }
+        },
+        "model.UserCreatePayload": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.UserLoginPayload": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
                 }
             }
         }

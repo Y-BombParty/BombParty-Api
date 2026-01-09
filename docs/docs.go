@@ -19,9 +19,6 @@ const docTemplate = `{
             "get": {
                 "security": [
                     {
-                        "ApiKeyAuth": []
-                    },
-                    {
                         "BearerAuth": []
                     }
                 ],
@@ -36,15 +33,6 @@ const docTemplate = `{
                     "Bombs"
                 ],
                 "summary": "List all bombs",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -69,9 +57,6 @@ const docTemplate = `{
             "post": {
                 "security": [
                     {
-                        "ApiKeyAuth": []
-                    },
-                    {
                         "BearerAuth": []
                     }
                 ],
@@ -87,13 +72,6 @@ const docTemplate = `{
                 ],
                 "summary": "Create a new bomb",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "description": "Bomb data",
                         "name": "bomb",
@@ -136,9 +114,6 @@ const docTemplate = `{
             "get": {
                 "security": [
                     {
-                        "ApiKeyAuth": []
-                    },
-                    {
                         "BearerAuth": []
                     }
                 ],
@@ -154,13 +129,6 @@ const docTemplate = `{
                 ],
                 "summary": "List bombs by user",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "type": "integer",
                         "description": "User ID",
@@ -204,9 +172,6 @@ const docTemplate = `{
             "get": {
                 "security": [
                     {
-                        "ApiKeyAuth": []
-                    },
-                    {
                         "BearerAuth": []
                     }
                 ],
@@ -222,13 +187,6 @@ const docTemplate = `{
                 ],
                 "summary": "Get a bomb by ID",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "type": "integer",
                         "description": "Bomb ID",
@@ -276,9 +234,6 @@ const docTemplate = `{
             "put": {
                 "security": [
                     {
-                        "ApiKeyAuth": []
-                    },
-                    {
                         "BearerAuth": []
                     }
                 ],
@@ -294,13 +249,6 @@ const docTemplate = `{
                 ],
                 "summary": "Update a bomb",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "type": "integer",
                         "description": "Bomb ID",
@@ -357,9 +305,6 @@ const docTemplate = `{
             "delete": {
                 "security": [
                     {
-                        "ApiKeyAuth": []
-                    },
-                    {
                         "BearerAuth": []
                     }
                 ],
@@ -375,13 +320,6 @@ const docTemplate = `{
                 ],
                 "summary": "Delete a bomb",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "type": "integer",
                         "description": "Bomb ID",
@@ -428,9 +366,6 @@ const docTemplate = `{
             "post": {
                 "security": [
                     {
-                        "ApiKeyAuth": []
-                    },
-                    {
                         "BearerAuth": []
                     }
                 ],
@@ -446,13 +381,6 @@ const docTemplate = `{
                 ],
                 "summary": "Create a new Game",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "description": "Game creation payload",
                         "name": "Game",
@@ -495,9 +423,6 @@ const docTemplate = `{
             "get": {
                 "security": [
                     {
-                        "ApiKeyAuth": []
-                    },
-                    {
                         "BearerAuth": []
                     }
                 ],
@@ -510,13 +435,6 @@ const docTemplate = `{
                 ],
                 "summary": "Get game by ID",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "type": "string",
                         "description": "game ID",
@@ -557,9 +475,6 @@ const docTemplate = `{
             "get": {
                 "security": [
                     {
-                        "ApiKeyAuth": []
-                    },
-                    {
                         "BearerAuth": []
                     }
                 ],
@@ -571,15 +486,6 @@ const docTemplate = `{
                     "games"
                 ],
                 "summary": "Get all games",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -606,9 +512,6 @@ const docTemplate = `{
             "delete": {
                 "security": [
                     {
-                        "ApiKeyAuth": []
-                    },
-                    {
                         "BearerAuth": []
                     }
                 ],
@@ -621,13 +524,6 @@ const docTemplate = `{
                 ],
                 "summary": "Delete a game",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "type": "string",
                         "description": "Game ID",
@@ -669,9 +565,6 @@ const docTemplate = `{
             "patch": {
                 "security": [
                     {
-                        "ApiKeyAuth": []
-                    },
-                    {
                         "BearerAuth": []
                     }
                 ],
@@ -687,13 +580,6 @@ const docTemplate = `{
                 ],
                 "summary": "Update a game",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "type": "string",
                         "description": "Game ID",
@@ -750,11 +636,6 @@ const docTemplate = `{
         },
         "/api/v1/teams": {
             "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Retrieve all teams",
                 "produces": [
                     "application/json"
@@ -763,15 +644,6 @@ const docTemplate = `{
                     "Teams"
                 ],
                 "summary": "Get all teams",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -794,11 +666,6 @@ const docTemplate = `{
                 }
             },
             "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Create a new team linked to a game",
                 "consumes": [
                     "application/json"
@@ -811,13 +678,6 @@ const docTemplate = `{
                 ],
                 "summary": "Create a team",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "description": "Team payload",
                         "name": "team",
@@ -858,11 +718,6 @@ const docTemplate = `{
         },
         "/api/v1/teams/{id}": {
             "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Retrieve a team by its UUID",
                 "produces": [
                     "application/json"
@@ -872,13 +727,6 @@ const docTemplate = `{
                 ],
                 "summary": "Get team by ID",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "type": "string",
                         "description": "Team ID (UUID)",
@@ -915,11 +763,6 @@ const docTemplate = `{
                 }
             },
             "put": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Update an existing team",
                 "consumes": [
                     "application/json"
@@ -932,13 +775,6 @@ const docTemplate = `{
                 ],
                 "summary": "Update a team",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "type": "string",
                         "description": "Team ID (UUID)",
@@ -993,11 +829,6 @@ const docTemplate = `{
                 }
             },
             "delete": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Delete a team by ID",
                 "produces": [
                     "application/json"
@@ -1007,13 +838,6 @@ const docTemplate = `{
                 ],
                 "summary": "Delete a team",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "type": "string",
                         "description": "Team ID (UUID)",
@@ -1052,6 +876,125 @@ const docTemplate = `{
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/login": {
+            "post": {
+                "description": "Authentifie un utilisateur avec son email et mot de passe et retourne un token JWT",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Connexion utilisateur",
+                "parameters": [
+                    {
+                        "description": "Identifiants de connexion",
+                        "name": "credentials",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UserLoginPayload"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Token JWT généré",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erreur avec le payload",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Identifiants invalides",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur serveur",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/register": {
+            "post": {
+                "description": "Enregistre un nouvel utilisateur avec un nom d'utilisateur, email et mot de passe",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Créer un nouveau compte utilisateur",
+                "parameters": [
+                    {
+                        "description": "Informations d'inscription",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UserCreatePayload"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Token JWT généré",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erreur avec le payload",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur serveur",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -1103,7 +1046,7 @@ const docTemplate = `{
             ],
             "properties": {
                 "id_user": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "lat": {
                     "type": "number"
@@ -1123,7 +1066,7 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "id_user": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "lat": {
                     "type": "number"
@@ -1229,6 +1172,31 @@ const docTemplate = `{
                     "type": "integer"
                 }
             }
+        },
+        "model.UserCreatePayload": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.UserLoginPayload": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
         }
     },
     "securityDefinitions": {
@@ -1245,7 +1213,7 @@ const docTemplate = `{
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
 	Host:             "localhost:7774",
-	BasePath:         "/api/v1",
+	BasePath:         "",
 	Schemes:          []string{},
 	Title:            "BombParty API",
 	Description:      "API pour le jeu BombParty",

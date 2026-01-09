@@ -1,4 +1,3 @@
-basePath: /api/v1
 definitions:
   dbmodel.TeamEntry:
     properties:
@@ -22,7 +21,7 @@ definitions:
   model.BombRequest:
     properties:
       id_user:
-        type: integer
+        type: string
       lat:
         type: number
       long:
@@ -40,7 +39,7 @@ definitions:
       bomb_id:
         type: integer
       id_user:
-        type: integer
+        type: string
       lat:
         type: number
       long:
@@ -109,6 +108,22 @@ definitions:
       score:
         type: integer
     type: object
+  model.UserCreatePayload:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  model.UserLoginPayload:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
 host: localhost:7774
 info:
   contact: {}
@@ -121,12 +136,6 @@ paths:
       consumes:
       - application/json
       description: Get all bombs
-      parameters:
-      - description: Authorization
-        in: header
-        name: Authorization
-        required: true
-        type: string
       produces:
       - application/json
       responses:
@@ -143,7 +152,6 @@ paths:
               type: string
             type: object
       security:
-      - ApiKeyAuth: []
       - BearerAuth: []
       summary: List all bombs
       tags:
@@ -153,11 +161,6 @@ paths:
       - application/json
       description: Create a new bomb with the provided data
       parameters:
-      - description: Authorization
-        in: header
-        name: Authorization
-        required: true
-        type: string
       - description: Bomb data
         in: body
         name: bomb
@@ -184,7 +187,6 @@ paths:
               type: string
             type: object
       security:
-      - ApiKeyAuth: []
       - BearerAuth: []
       summary: Create a new bomb
       tags:
@@ -195,11 +197,6 @@ paths:
       - application/json
       description: Delete a bomb by ID
       parameters:
-      - description: Authorization
-        in: header
-        name: Authorization
-        required: true
-        type: string
       - description: Bomb ID
         in: path
         name: id
@@ -229,7 +226,6 @@ paths:
               type: string
             type: object
       security:
-      - ApiKeyAuth: []
       - BearerAuth: []
       summary: Delete a bomb
       tags:
@@ -239,11 +235,6 @@ paths:
       - application/json
       description: Get a single bomb by its ID
       parameters:
-      - description: Authorization
-        in: header
-        name: Authorization
-        required: true
-        type: string
       - description: Bomb ID
         in: path
         name: id
@@ -275,7 +266,6 @@ paths:
               type: string
             type: object
       security:
-      - ApiKeyAuth: []
       - BearerAuth: []
       summary: Get a bomb by ID
       tags:
@@ -285,11 +275,6 @@ paths:
       - application/json
       description: Update an existing bomb
       parameters:
-      - description: Authorization
-        in: header
-        name: Authorization
-        required: true
-        type: string
       - description: Bomb ID
         in: path
         name: id
@@ -327,7 +312,6 @@ paths:
               type: string
             type: object
       security:
-      - ApiKeyAuth: []
       - BearerAuth: []
       summary: Update a bomb
       tags:
@@ -338,11 +322,6 @@ paths:
       - application/json
       description: Get all bombs created by a specific user
       parameters:
-      - description: Authorization
-        in: header
-        name: Authorization
-        required: true
-        type: string
       - description: User ID
         in: path
         name: userId
@@ -370,7 +349,6 @@ paths:
               type: string
             type: object
       security:
-      - ApiKeyAuth: []
       - BearerAuth: []
       summary: List bombs by user
       tags:
@@ -381,11 +359,6 @@ paths:
       - application/json
       description: Creates a new Game entry in the database
       parameters:
-      - description: Authorization
-        in: header
-        name: Authorization
-        required: true
-        type: string
       - description: Game creation payload
         in: body
         name: Game
@@ -412,7 +385,6 @@ paths:
               type: string
             type: object
       security:
-      - ApiKeyAuth: []
       - BearerAuth: []
       summary: Create a new Game
       tags:
@@ -422,11 +394,6 @@ paths:
       description: Retrieves a specific game from the database by its ID, including
         associated teams
       parameters:
-      - description: Authorization
-        in: header
-        name: Authorization
-        required: true
-        type: string
       - description: game ID
         in: path
         name: id
@@ -452,7 +419,6 @@ paths:
               type: string
             type: object
       security:
-      - ApiKeyAuth: []
       - BearerAuth: []
       summary: Get game by ID
       tags:
@@ -460,12 +426,6 @@ paths:
   /api/v1/games:
     get:
       description: Retrieves a list of all games from the database
-      parameters:
-      - description: Authorization
-        in: header
-        name: Authorization
-        required: true
-        type: string
       produces:
       - application/json
       responses:
@@ -482,7 +442,6 @@ paths:
               type: string
             type: object
       security:
-      - ApiKeyAuth: []
       - BearerAuth: []
       summary: Get all games
       tags:
@@ -491,11 +450,6 @@ paths:
     delete:
       description: Deletes a game from the database by its ID
       parameters:
-      - description: Authorization
-        in: header
-        name: Authorization
-        required: true
-        type: string
       - description: Game ID
         in: path
         name: id
@@ -523,7 +477,6 @@ paths:
               type: string
             type: object
       security:
-      - ApiKeyAuth: []
       - BearerAuth: []
       summary: Delete a game
       tags:
@@ -533,11 +486,6 @@ paths:
       - application/json
       description: Updates an existing game's information in the database
       parameters:
-      - description: Authorization
-        in: header
-        name: Authorization
-        required: true
-        type: string
       - description: Game ID
         in: path
         name: id
@@ -575,7 +523,6 @@ paths:
               type: string
             type: object
       security:
-      - ApiKeyAuth: []
       - BearerAuth: []
       summary: Update a game
       tags:
@@ -583,12 +530,6 @@ paths:
   /api/v1/teams:
     get:
       description: Retrieve all teams
-      parameters:
-      - description: Authorization
-        in: header
-        name: Authorization
-        required: true
-        type: string
       produces:
       - application/json
       responses:
@@ -604,8 +545,6 @@ paths:
             additionalProperties:
               type: string
             type: object
-      security:
-      - ApiKeyAuth: []
       summary: Get all teams
       tags:
       - Teams
@@ -614,11 +553,6 @@ paths:
       - application/json
       description: Create a new team linked to a game
       parameters:
-      - description: Authorization
-        in: header
-        name: Authorization
-        required: true
-        type: string
       - description: Team payload
         in: body
         name: team
@@ -644,8 +578,6 @@ paths:
             additionalProperties:
               type: string
             type: object
-      security:
-      - ApiKeyAuth: []
       summary: Create a team
       tags:
       - Teams
@@ -653,11 +585,6 @@ paths:
     delete:
       description: Delete a team by ID
       parameters:
-      - description: Authorization
-        in: header
-        name: Authorization
-        required: true
-        type: string
       - description: Team ID (UUID)
         in: path
         name: id
@@ -690,19 +617,12 @@ paths:
             additionalProperties:
               type: string
             type: object
-      security:
-      - ApiKeyAuth: []
       summary: Delete a team
       tags:
       - Teams
     get:
       description: Retrieve a team by its UUID
       parameters:
-      - description: Authorization
-        in: header
-        name: Authorization
-        required: true
-        type: string
       - description: Team ID (UUID)
         in: path
         name: id
@@ -727,8 +647,6 @@ paths:
             additionalProperties:
               type: string
             type: object
-      security:
-      - ApiKeyAuth: []
       summary: Get team by ID
       tags:
       - Teams
@@ -737,11 +655,6 @@ paths:
       - application/json
       description: Update an existing team
       parameters:
-      - description: Authorization
-        in: header
-        name: Authorization
-        required: true
-        type: string
       - description: Team ID (UUID)
         in: path
         name: id
@@ -778,11 +691,89 @@ paths:
             additionalProperties:
               type: string
             type: object
-      security:
-      - ApiKeyAuth: []
       summary: Update a team
       tags:
       - Teams
+  /user/login:
+    post:
+      consumes:
+      - application/json
+      description: Authentifie un utilisateur avec son email et mot de passe et retourne
+        un token JWT
+      parameters:
+      - description: Identifiants de connexion
+        in: body
+        name: credentials
+        required: true
+        schema:
+          $ref: '#/definitions/model.UserLoginPayload'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Token JWT généré
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Erreur avec le payload
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Identifiants invalides
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Erreur serveur
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Connexion utilisateur
+      tags:
+      - auth
+  /user/register:
+    post:
+      consumes:
+      - application/json
+      description: Enregistre un nouvel utilisateur avec un nom d'utilisateur, email
+        et mot de passe
+      parameters:
+      - description: Informations d'inscription
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.UserCreatePayload'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Token JWT généré
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Erreur avec le payload
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Erreur serveur
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Créer un nouveau compte utilisateur
+      tags:
+      - auth
 securityDefinitions:
   BearerAuth:
     description: Type "Bearer" suivi de votre token JWT

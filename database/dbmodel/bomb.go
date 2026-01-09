@@ -6,11 +6,11 @@ import (
 )
 
 type BombEntry struct {
-	BombID   uuid.UUID `gorm:"type:uuid; primaryKey"`
+	BombID   int       `gorm:"type:int; primaryKey"`
 	Lat      float32   `json:"lat"`
 	Long     float32   `json:"long"`
 	TypeBomb string    `json:"type_bomb"`
-	IdUser   int       `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"care_taker"`
+	IdUser   uuid.UUID `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"care_taker"`
 }
 
 type BombRepository interface {
