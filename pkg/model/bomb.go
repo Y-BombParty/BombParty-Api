@@ -6,7 +6,7 @@ type BombRequest struct {
 	Lat      float32 `json:"lat" binding:"required"`
 	Long     float32 `json:"long" binding:"required"`
 	TypeBomb string  `json:"type_bomb" binding:"required"`
-	//IdUser   int     `json:"id_user" binding:"required"`
+	IdUser   int     `json:"id_user" binding:"required"`
 }
 
 func (b *BombRequest) Bind(r *http.Request) error {
