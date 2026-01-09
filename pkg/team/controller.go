@@ -29,7 +29,7 @@ func New(configuration *config.Config) *TeamConfig {
 // @Success      201   {object}  dbmodel.TeamEntry
 // @Failure      400   {object}  map[string]string
 // @Failure      500   {object}  map[string]string
-// @Router       /teams [post]
+// @Router       api/v1/teams [post]
 func (config *TeamConfig) CreateTeamHandler(w http.ResponseWriter, r *http.Request) {
 	req := &model.TeamRequest{}
 
@@ -68,7 +68,7 @@ func (config *TeamConfig) CreateTeamHandler(w http.ResponseWriter, r *http.Reque
 // @Produce      json
 // @Success      200  {array}   dbmodel.TeamEntry
 // @Failure      500  {object}  map[string]string
-// @Router       /teams [get]
+// @Router       api/v1/teams [get]
 func (config *TeamConfig) GetAllTeamsHandler(w http.ResponseWriter, r *http.Request) {
 	teams, err := config.TeamRepository.FindAll()
 	if err != nil {
@@ -91,7 +91,7 @@ func (config *TeamConfig) GetAllTeamsHandler(w http.ResponseWriter, r *http.Requ
 // @Success      200  {object}  dbmodel.TeamEntry
 // @Failure      400  {object}  map[string]string
 // @Failure      404  {object}  map[string]string
-// @Router       /teams/{id} [get]
+// @Router       api/v1/teams/{id} [get]
 func (config *TeamConfig) GetTeamByIDHandler(w http.ResponseWriter, r *http.Request) {
 	idParam := chi.URLParam(r, "id")
 
@@ -130,7 +130,7 @@ func (config *TeamConfig) GetTeamByIDHandler(w http.ResponseWriter, r *http.Requ
 // @Failure      400   {object}  map[string]string
 // @Failure      404   {object}  map[string]string
 // @Failure      500   {object}  map[string]string
-// @Router       /teams/{id} [put]
+// @Router       api/v1/teams/{id} [put]
 func (config *TeamConfig) UpdateTeamHandler(w http.ResponseWriter, r *http.Request) {
 	idParam := chi.URLParam(r, "id")
 
@@ -188,7 +188,7 @@ func (config *TeamConfig) UpdateTeamHandler(w http.ResponseWriter, r *http.Reque
 // @Failure      400  {object}  map[string]string
 // @Failure      404  {object}  map[string]string
 // @Failure      500  {object}  map[string]string
-// @Router       /teams/{id} [delete]
+// @Router       api/v1/teams/{id} [delete]
 func (config *TeamConfig) DeleteTeamHandler(w http.ResponseWriter, r *http.Request) {
 	idParam := chi.URLParam(r, "id")
 

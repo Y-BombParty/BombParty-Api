@@ -116,7 +116,8 @@ func (config *GameConfig) GetByIdHandler(w http.ResponseWriter, r *http.Request)
 			Score:  team.Score,
 			Name:   team.Name,
 			Color:  team.Color,
-			IDGame: team.IDGame})
+			//IDGame: team.IDGame
+			})
 	}
 
 	res := &model.GameResponse{
@@ -157,7 +158,8 @@ func (config *GameConfig) GetAlldHandler(w http.ResponseWriter, r *http.Request)
 				Score:  team.Score,
 				Name:   team.Name,
 				Color:  team.Color,
-				IDGame: team.IDGame})
+				//IDGame: team.IDGame
+			})
 		}
 
 		res = append(res,
@@ -259,7 +261,8 @@ func (config *GameConfig) UpdateHandler(w http.ResponseWriter, r *http.Request) 
 				Score:  team.Score,
 				Name:   team.Name,
 				Color:  team.Color,
-				IDGame: team.IDGame})
+				//IDGame: team.IDGame,
+			})
 	}
 
 	res := &model.GameResponse{

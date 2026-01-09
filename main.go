@@ -12,6 +12,7 @@ import (
 	"bombparty.com/bombparty-api/config"
 	"bombparty.com/bombparty-api/pkg/bomb"
 	"bombparty.com/bombparty-api/pkg/inventory"
+	"bombparty.com/bombparty-api/pkg/team"
 	"bombparty.com/bombparty-api/pkg/user"
 )
 
@@ -47,6 +48,7 @@ func Routes(configuration *config.Config) *chi.Mux {
 	router.Mount("/api/v1/bombs", bomb.Routes(configuration))
 	router.Mount("/api/v1/user", user.Routes(configuration))
 	router.Mount("/api/v1/inventory", inventory.Routes(configuration))
+	router.Mount("/api/v1/teams", team.Routes(configuration))
 
 	return router
 }
