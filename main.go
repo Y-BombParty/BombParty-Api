@@ -1,8 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 
 	"github.com/go-chi/chi/v5"
@@ -10,39 +12,67 @@ import (
 	httpSwagger "github.com/swaggo/http-swagger"
 
 	"bombparty.com/bombparty-api/config"
+	_ "bombparty.com/bombparty-api/docs" // Import pour initialiser Swagger
 	"bombparty.com/bombparty-api/pkg/bomb"
 	"bombparty.com/bombparty-api/pkg/game"
 	"bombparty.com/bombparty-api/pkg/inventory"
 	"bombparty.com/bombparty-api/pkg/team"
 	"bombparty.com/bombparty-api/pkg/user"
+	"github.com/joho/godotenv"
 )
 
+// @title BombParty API
+// @version 1.0
+// @description API pour le jeu BombParty
+// @host localhost:7774
+// @BasePath /api/v1
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
+// @description Type "Bearer" suivi de votre token JWT
+
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+	
+	PORT := os.Getenv("PORT")
+	if PORT == "" {
+		PORT = "8080" // Valeur par défaut
+	}
+
 	configuration, err := config.New()
 	if err != nil {
 		log.Panicln("Configuration error:", err)
 	}
 
 	// Initialisation des routes
-	router := Routes(configuration)
+	router := Routes(configuration, PORT)
 
 	// Afficher toutes les routes
 	printRoutes(router)
 
-	log.Println("\nServing on : http://localhost:8080/api/v1/ \nServing swagger on : http://localhost:8080/swagger/index.html ")
-	log.Fatal(http.ListenAndServe(":8080", router))
+	log.Printf("\nServing on: http://localhost%s/api/v1/", PORT)
+	log.Printf("Serving swagger on: http://localhost%s/swagger/index.html\n", PORT)
+	
+	address := fmt.Sprintf("%s", PORT)
+	log.Fatal(http.ListenAndServe(address, router))
 }
 
-func Routes(configuration *config.Config) *chi.Mux {
+func Routes(configuration *config.Config, port string) *chi.Mux {
 	router := chi.NewRouter()
 	router.Use(middleware.Logger)
 
+	// URL Swagger dynamique basée sur le port
+	swaggerURL := fmt.Sprintf("http://localhost%s/swagger/doc.json", port)
+	
 	router.Get("/swagger/*", httpSwagger.Handler(
-		httpSwagger.URL("http://localhost:8080/swagger.json"),
+		httpSwagger.URL(swaggerURL),
 	))
 
 	// Serve Swagger JSON
-	router.Get("/swagger.json", func(w http.ResponseWriter, r *http.Request) {
+	router.Get("/swagger/doc.json", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "docs/swagger.json")
 	})
 
