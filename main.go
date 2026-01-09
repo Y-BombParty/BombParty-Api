@@ -45,7 +45,7 @@ func main() {
 
 	// Afficher toutes les routes
 	printRoutes(router)
-	log.Printf("\nServing on: http://localhost%s/api/v1/", configuration.Port)
+	log.Printf("\nServing on: http://localhost:%s/api/v1/", configuration.Port)
 	log.Printf("Serving swagger on: http://localhost%s/swagger/index.html\n", configuration.Port)
 
 	address := fmt.Sprintf("%s", configuration.Port)

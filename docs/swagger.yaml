@@ -1,23 +1,4 @@
 definitions:
-  dbmodel.TeamEntry:
-    properties:
-      color:
-        type: string
-      created_at:
-        type: string
-      deleted_at:
-        type: string
-      idgame:
-        type: string
-      idteam:
-        type: string
-      name:
-        type: string
-      score:
-        type: integer
-      updated_at:
-        type: string
-    type: object
   model.BombRequest:
     properties:
       id_user:
@@ -108,8 +89,6 @@ definitions:
       score:
         type: integer
     type: object
-<<<<<<< HEAD
-=======
   model.UserCreatePayload:
     properties:
       email:
@@ -127,7 +106,6 @@ definitions:
         type: string
     type: object
 host: localhost:7774
->>>>>>> pre-release
 info:
   contact: {}
   description: API pour le jeu BombParty
@@ -356,11 +334,7 @@ paths:
       summary: List bombs by user
       tags:
       - Bombs
-<<<<<<< HEAD
-  /game:
-=======
   /api/v1/game:
->>>>>>> pre-release
     post:
       consumes:
       - application/json
@@ -396,11 +370,7 @@ paths:
       summary: Create a new Game
       tags:
       - games
-<<<<<<< HEAD
-  /game/{id}:
-=======
   /api/v1/game/{id}:
->>>>>>> pre-release
     get:
       description: Retrieves a specific game from the database by its ID, including
         associated teams
@@ -434,11 +404,7 @@ paths:
       summary: Get game by ID
       tags:
       - games
-<<<<<<< HEAD
-  /games:
-=======
   /api/v1/games:
->>>>>>> pre-release
     get:
       description: Retrieves a list of all games from the database
       produces:
@@ -461,11 +427,7 @@ paths:
       summary: Get all games
       tags:
       - games
-<<<<<<< HEAD
-  /games/{id}:
-=======
   /api/v1/games/{id}:
->>>>>>> pre-release
     delete:
       description: Deletes a game from the database by its ID
       parameters:
@@ -546,11 +508,7 @@ paths:
       summary: Update a game
       tags:
       - games
-<<<<<<< HEAD
-  /teams:
-=======
   /api/v1/teams:
->>>>>>> pre-release
     get:
       description: Retrieve all teams
       produces:
@@ -560,7 +518,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/dbmodel.TeamEntry'
+              $ref: '#/definitions/model.TeamResponse'
             type: array
         "500":
           description: Internal Server Error
@@ -568,6 +526,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Get all teams
       tags:
       - Teams
@@ -588,7 +548,7 @@ paths:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/dbmodel.TeamEntry'
+            $ref: '#/definitions/model.TeamResponse'
         "400":
           description: Bad Request
           schema:
@@ -601,14 +561,12 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Create a team
       tags:
       - Teams
-<<<<<<< HEAD
-  /teams/{id}:
-=======
   /api/v1/teams/{id}:
->>>>>>> pre-release
     delete:
       description: Delete a team by ID
       parameters:
@@ -644,6 +602,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Delete a team
       tags:
       - Teams
@@ -661,7 +621,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dbmodel.TeamEntry'
+            $ref: '#/definitions/model.TeamResponse'
         "400":
           description: Bad Request
           schema:
@@ -674,6 +634,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Get team by ID
       tags:
       - Teams
@@ -699,7 +661,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dbmodel.TeamEntry'
+            $ref: '#/definitions/model.TeamResponse'
         "400":
           description: Bad Request
           schema:
@@ -718,12 +680,12 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Update a team
       tags:
       - Teams
-<<<<<<< HEAD
-=======
-  /user/login:
+  /api/v1/user/login:
     post:
       consumes:
       - application/json
@@ -766,7 +728,7 @@ paths:
       summary: Connexion utilisateur
       tags:
       - auth
-  /user/register:
+  /api/v1/user/register:
     post:
       consumes:
       - application/json
@@ -809,5 +771,4 @@ securityDefinitions:
     in: header
     name: Authorization
     type: apiKey
->>>>>>> pre-release
 swagger: "2.0"

@@ -362,11 +362,7 @@ const docTemplate = `{
                 }
             }
         },
-<<<<<<< HEAD
-        "/game": {
-=======
         "/api/v1/game": {
->>>>>>> pre-release
             "post": {
                 "security": [
                     {
@@ -423,11 +419,7 @@ const docTemplate = `{
                 }
             }
         },
-<<<<<<< HEAD
-        "/game/{id}": {
-=======
         "/api/v1/game/{id}": {
->>>>>>> pre-release
             "get": {
                 "security": [
                     {
@@ -479,11 +471,7 @@ const docTemplate = `{
                 }
             }
         },
-<<<<<<< HEAD
-        "/games": {
-=======
         "/api/v1/games": {
->>>>>>> pre-release
             "get": {
                 "security": [
                     {
@@ -520,11 +508,7 @@ const docTemplate = `{
                 }
             }
         },
-<<<<<<< HEAD
-        "/games/{id}": {
-=======
         "/api/v1/games/{id}": {
->>>>>>> pre-release
             "delete": {
                 "security": [
                     {
@@ -650,12 +634,13 @@ const docTemplate = `{
                 }
             }
         },
-<<<<<<< HEAD
-        "/teams": {
-=======
         "/api/v1/teams": {
->>>>>>> pre-release
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Retrieve all teams",
                 "produces": [
                     "application/json"
@@ -670,7 +655,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/dbmodel.TeamEntry"
+                                "$ref": "#/definitions/model.TeamResponse"
                             }
                         }
                     },
@@ -686,6 +671,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create a new team linked to a game",
                 "consumes": [
                     "application/json"
@@ -712,7 +702,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/dbmodel.TeamEntry"
+                            "$ref": "#/definitions/model.TeamResponse"
                         }
                     },
                     "400": {
@@ -736,12 +726,13 @@ const docTemplate = `{
                 }
             }
         },
-<<<<<<< HEAD
-        "/teams/{id}": {
-=======
         "/api/v1/teams/{id}": {
->>>>>>> pre-release
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Retrieve a team by its UUID",
                 "produces": [
                     "application/json"
@@ -763,7 +754,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dbmodel.TeamEntry"
+                            "$ref": "#/definitions/model.TeamResponse"
                         }
                     },
                     "400": {
@@ -787,6 +778,11 @@ const docTemplate = `{
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update an existing team",
                 "consumes": [
                     "application/json"
@@ -820,7 +816,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dbmodel.TeamEntry"
+                            "$ref": "#/definitions/model.TeamResponse"
                         }
                     },
                     "400": {
@@ -853,6 +849,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Delete a team by ID",
                 "produces": [
                     "application/json"
@@ -909,10 +910,8 @@ const docTemplate = `{
                     }
                 }
             }
-<<<<<<< HEAD
-=======
         },
-        "/user/login": {
+        "/api/v1/user/login": {
             "post": {
                 "description": "Authentifie un utilisateur avec son email et mot de passe et retourne un token JWT",
                 "consumes": [
@@ -976,7 +975,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/register": {
+        "/api/v1/user/register": {
             "post": {
                 "description": "Enregistre un nouvel utilisateur avec un nom d'utilisateur, email et mot de passe",
                 "consumes": [
@@ -1030,39 +1029,9 @@ const docTemplate = `{
                     }
                 }
             }
->>>>>>> pre-release
         }
     },
     "definitions": {
-        "dbmodel.TeamEntry": {
-            "type": "object",
-            "properties": {
-                "color": {
-                    "type": "string"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "deleted_at": {
-                    "type": "string"
-                },
-                "idgame": {
-                    "type": "string"
-                },
-                "idteam": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "score": {
-                    "type": "integer"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
-        },
         "model.BombRequest": {
             "type": "object",
             "required": [
@@ -1199,8 +1168,6 @@ const docTemplate = `{
                     "type": "integer"
                 }
             }
-<<<<<<< HEAD
-=======
         },
         "model.UserCreatePayload": {
             "type": "object",
@@ -1234,7 +1201,6 @@ const docTemplate = `{
             "type": "apiKey",
             "name": "Authorization",
             "in": "header"
->>>>>>> pre-release
         }
     }
 }`

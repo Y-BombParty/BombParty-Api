@@ -68,7 +68,7 @@ API available at:
 Once the server is running:
 
 ```
-http://localhost:8080/swagger/index.html
+http://localhost:7774/swagger/index.html
 ```
 ## Routes
 

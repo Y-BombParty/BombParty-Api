@@ -26,7 +26,8 @@ func New(configuration *config.Config) *TeamConfig {
 // @Accept       json
 // @Produce      json
 // @Param        team  body      model.TeamRequest  true  "Team payload"
-// @Success      201   {object}  dbmodel.TeamEntry
+// @Security     BearerAuth
+// @Success      201   {object}  model.TeamResponse
 // @Failure      400   {object}  map[string]string
 // @Failure      500   {object}  map[string]string
 // @Router       /api/v1/teams [post]
@@ -56,9 +57,17 @@ func (config *TeamConfig) CreateTeamHandler(w http.ResponseWriter, r *http.Reque
 		})
 		return
 	}
+	res := model.TeamResponse{
+			Score:  savedTeam.Score,
+			Name:   savedTeam.Name,
+			Color:  savedTeam.Color,
+			IDGame: savedTeam.IDGame,
+
+	}
+
 
 	render.Status(r, http.StatusCreated)
-	render.JSON(w, r, savedTeam)
+	render.JSON(w, r, res)
 }
 
 // GetAllTeamsHandler godoc
@@ -66,7 +75,8 @@ func (config *TeamConfig) CreateTeamHandler(w http.ResponseWriter, r *http.Reque
 // @Description  Retrieve all teams
 // @Tags         Teams
 // @Produce      json
-// @Success      200  {array}   dbmodel.TeamEntry
+// @Security     BearerAuth
+// @Success      200  {array}   model.TeamResponse
 // @Failure      500  {object}  map[string]string
 // @Router       /api/v1/teams [get]
 func (config *TeamConfig) GetAllTeamsHandler(w http.ResponseWriter, r *http.Request) {
@@ -78,6 +88,7 @@ func (config *TeamConfig) GetAllTeamsHandler(w http.ResponseWriter, r *http.Requ
 		})
 		return
 	}
+	
 	render.Status(r, http.StatusOK)
 	render.JSON(w, r, teams)
 }
@@ -88,7 +99,8 @@ func (config *TeamConfig) GetAllTeamsHandler(w http.ResponseWriter, r *http.Requ
 // @Tags         Teams
 // @Produce      json
 // @Param        id   path      string  true  "Team ID (UUID)"
-// @Success      200  {object}  dbmodel.TeamEntry
+// @Security     BearerAuth
+// @Success      200  {object}  model.TeamResponse
 // @Failure      400  {object}  map[string]string
 // @Failure      404  {object}  map[string]string
 // @Router       /api/v1/teams/{id} [get]
@@ -113,8 +125,16 @@ func (config *TeamConfig) GetTeamByIDHandler(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
+	res := model.TeamResponse{
+			Score: team.Score,
+			Name:   team.Name,
+			Color:  team.Color,
+			IDGame: team.IDGame,
+
+	}
+
 	render.Status(r, http.StatusOK)
-	render.JSON(w, r, team)
+	render.JSON(w, r, res)
 
 }
 
@@ -126,7 +146,8 @@ func (config *TeamConfig) GetTeamByIDHandler(w http.ResponseWriter, r *http.Requ
 // @Produce      json
 // @Param        id    path      string               true  "Team ID (UUID)"
 // @Param        team  body      model.TeamRequest   true  "Updated team payload"
-// @Success      200   {object}  dbmodel.TeamEntry
+// @Security     BearerAuth
+// @Success      200   {object}  model.TeamResponse
 // @Failure      400   {object}  map[string]string
 // @Failure      404   {object}  map[string]string
 // @Failure      500   {object}  map[string]string
@@ -174,8 +195,15 @@ func (config *TeamConfig) UpdateTeamHandler(w http.ResponseWriter, r *http.Reque
 		})
 		return
 	}
+	res := model.TeamResponse{
+			Score:  updatedTeam.Score,
+			Name:   updatedTeam.Name,
+			Color:  updatedTeam.Color,
+			IDGame: updatedTeam.IDGame,
+
+	}
 	render.Status(r, http.StatusOK)
-	render.JSON(w, r, updatedTeam)
+	render.JSON(w, r, res)
 }
 
 // DeleteTeamHandler godoc
@@ -184,6 +212,7 @@ func (config *TeamConfig) UpdateTeamHandler(w http.ResponseWriter, r *http.Reque
 // @Tags         Teams
 // @Produce      json
 // @Param        id   path      string  true  "Team ID (UUID)"
+// @Security     BearerAuth
 // @Success      200  {object}  map[string]string
 // @Failure      400  {object}  map[string]string
 // @Failure      404  {object}  map[string]string
