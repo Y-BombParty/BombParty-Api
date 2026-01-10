@@ -6,7 +6,7 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
-func ProtectedRoutes(config *config.Config) *chi.Mux {
+func Routes(config *config.Config) *chi.Mux {
 	UserConfig := New(config)
 
 	router := chi.NewRouter()

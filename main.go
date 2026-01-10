@@ -71,7 +71,7 @@ func Routes(configuration *config.Config) *chi.Mux {
 	router.Route("/api/v1", func(r chi.Router) {
 		r.Mount("/bombs", bomb.Routes(configuration))
 		r.Mount("/auth", authentication.Routes(configuration))
-		r.Mount("/users", user.ProtectedRoutes(configuration))
+		r.Mount("/users", user.Routes(configuration))
 		r.Mount("/inventory", inventory.Routes(configuration))
 		r.Mount("/games", game.Routes(configuration))
 		r.Mount("/teams", team.Routes(configuration))
