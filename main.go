@@ -68,12 +68,14 @@ func Routes(configuration *config.Config) *chi.Mux {
 		http.ServeFile(w, r, "docs/swagger.json")
 	})
 
-	router.Mount("/api/v1/bombs", bomb.Routes(configuration))
-	router.Mount("/api/v1/auth", authentication.Routes(configuration))
-	router.Mount("/api/v1/users", user.ProtectedRoutes(configuration))
-	router.Mount("/api/v1/inventory", inventory.Routes(configuration))
-	router.Mount("/api/v1/games", game.Routes(configuration))
-	router.Mount("/api/v1/teams", team.Routes(configuration))
+	router.Route("/api/v1", func(r chi.Router) {
+		r.Mount("/bombs", bomb.Routes(configuration))
+		r.Mount("/auth", authentication.Routes(configuration))
+		r.Mount("/users", user.ProtectedRoutes(configuration))
+		r.Mount("/inventory", inventory.Routes(configuration))
+		r.Mount("/games", game.Routes(configuration))
+		r.Mount("/teams", team.Routes(configuration))
+	})
 
 	return router
 }
