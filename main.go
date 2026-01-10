@@ -13,6 +13,7 @@ import (
 
 	"bombparty.com/bombparty-api/config"
 	_ "bombparty.com/bombparty-api/docs" // Import pour initialiser Swagger
+	"bombparty.com/bombparty-api/pkg/authentication"
 	"bombparty.com/bombparty-api/pkg/bomb"
 	"bombparty.com/bombparty-api/pkg/game"
 	"bombparty.com/bombparty-api/pkg/inventory"
@@ -39,7 +40,6 @@ func main() {
 		log.Panicln("Configuration error:", err)
 	}
 
-
 	// Initialisation des routes
 	router := Routes(configuration)
 
@@ -57,7 +57,7 @@ func Routes(configuration *config.Config) *chi.Mux {
 	router.Use(middleware.Logger)
 
 	// URL Swagger dynamique basée sur le port
-	swaggerURL := fmt.Sprintf("http://localhost%s/swagger/doc.json", configuration.Port)
+	swaggerURL := fmt.Sprintf("http://localhost:%s/swagger/doc.json", configuration.Port)
 
 	router.Get("/swagger/*", httpSwagger.Handler(
 		httpSwagger.URL(swaggerURL),
@@ -69,8 +69,8 @@ func Routes(configuration *config.Config) *chi.Mux {
 	})
 
 	router.Mount("/api/v1/bombs", bomb.Routes(configuration))
-	router.Mount("/api/v1/user", user.Routes(configuration))
-	router.Mount("/api/v1/puser", user.ProtectedRoutes(configuration))
+	router.Mount("/api/v1/auth", authentication.Routes(configuration))
+	router.Mount("/api/v1/users", user.ProtectedRoutes(configuration))
 	router.Mount("/api/v1/inventory", inventory.Routes(configuration))
 	router.Mount("/api/v1/games", game.Routes(configuration))
 	router.Mount("/api/v1/teams", team.Routes(configuration))

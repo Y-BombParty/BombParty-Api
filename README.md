@@ -22,6 +22,13 @@ The configuration (in the `config` package) initializes:
 - Repositories for each entity  
 - Automatic schema migrations  
 
+Add a .env file at repo's root containing these fields : 
+
+- JWT_SECRET_KEY
+    - your jwt key
+- PORT 
+    - the port to your application
+
 ## Technologies
 
 - **Go**  
@@ -72,8 +79,11 @@ http://localhost:7774/swagger/index.html
 ```
 ## Routes
 
-POST   /api/v1/users/login
-POST   /api/v1/users/register
+POST   /api/v1/auth/login
+POST   /api/v1/auth/register
+
+### Protected by JWT Token Authorization
+
 GET    /api/v1/users/
 GET    /api/v1/users/{id}
 PUT    /api/v1/users/{id}
